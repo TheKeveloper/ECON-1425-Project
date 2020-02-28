@@ -1,5 +1,5 @@
 from datetime import datetime
-class Senator:
+class Legislator:
     def __init__(self, src : dict):
         self._id : str = src["id"]["bioguide"]
         self.bioguide_id = src["id"]["bioguide"]
