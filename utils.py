@@ -2,6 +2,8 @@ import json
 import csv
 import pickle
 import sqlalchemy
+from sqlalchemy import Column, Integer, Text  
+from sqlalchemy.dialects.postgresql import JSON, JSONB
 
 postgres_connection_string = "postgresql://localhost/econ1425db"
 # a mapping that stores unordered pairs
@@ -39,6 +41,22 @@ def db_connect():
     engine = db.connect()
     meta = sqlalchemy.MetaData(engine)
     return (db, engine, meta)
+
+def db_tables(meta):
+    bill_table = sqlalchemy.Table("bills", meta,
+                 Column("id", Text, primary_key = True),
+                 Column("doc", JSON)
+    )
+
+    leg_table = sqlalchemy.Table("leg", meta,
+                    Column("id", Text, primary_key = True),
+                    Column("doc", JSON)
+    )
+
+    return {
+        "bills" : bill_table,
+        "leg" : leg_table
+    }
 
 def get_bill(engine, bill_id):
     return engine.execute("SELECT * FROM bills WHERE id = '{}'".format(bill_id)).fetchone()[1]
