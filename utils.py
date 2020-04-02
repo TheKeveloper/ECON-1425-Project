@@ -1,0 +1,62 @@
+import json
+import csv
+import pickle
+# a mapping that stores unordered pairs
+def get_json(path : str):
+    with open(path, "r") as f:
+        return json.load(f)
+
+
+def save_json(obj : any, path : str):
+    with open(path, "w+") as f:
+        json.dump(obj, f)
+
+
+def save_csv(obj : list, path : str):
+    headers = obj[0].keys() 
+    with open(path, "w+") as f:
+        writer = csv.DictWriter(f, headers)
+        writer.writeheader()
+        writer.writerows(obj)
+
+def get_csv(path : str):
+    with open(path, "r") as csvfile: 
+        reader = csv.DictReader(csvfile)
+        return list(reader)
+
+def pickle_save(obj, path):
+    with open(path, "w+") as f:
+        pickle.dump(obj, f)
+
+def pickle_get(path):
+    with open(path, "r") as f:
+        return pickle.load(f)
+
+class PairMap:
+    def __init__(self):
+        self.map : dict = {}
+
+    def put(self, a, b, val):
+        self.map[self.make_key(a, b)] = val
+    
+    def get(self, a, b, default = None):
+        key = self.make_key(a, b)
+        if key in self.map:
+            return self.map[key]
+        else: 
+            return default
+
+    def exists(self, a, b): 
+        return self.make_key(a, b) in self.map
+    
+    def keys(self):
+        return [json.loads(s) for s in self.map.keys()]
+
+    def values(self):
+        return self.map.values()
+    
+    def items(self):
+        return [(json.loads(key), val) for key, val in self.map.items()]
+
+    def make_key(self, a, b):
+        return json.dumps(sorted((a, b)))
