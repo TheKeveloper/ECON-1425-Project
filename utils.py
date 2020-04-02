@@ -52,6 +52,19 @@ def get_leg_map(engine):
 def get_bills_map(engine):
     return dict(engine.execute("SELECT * FROM bills").fetchall())
 
+def update(engine, table, leg_id, leg_doc):
+    engine.execute(table.update().where(table.c.id == leg_id).values(doc = leg_doc))
+
+def update_all(engine, table, map : dict, verbose = False, increment = 10**4):
+    i = 0
+    total = len(map)
+    for key, value in map.items():
+        update(engine, table, key, value)
+        if verbose:
+            i += 1
+            if i % increment == 0:
+                print("Finished {} of {}".format(i, total))
+
 class PairMap:
     def __init__(self):
         self.map : dict = {}
