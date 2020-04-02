@@ -1,11 +1,13 @@
 import json
 import csv
 import pickle
+import sqlalchemy
+
+postgres_connection_string = "postgresql://localhost/econ1425db"
 # a mapping that stores unordered pairs
 def get_json(path : str):
     with open(path, "r") as f:
         return json.load(f)
-
 
 def save_json(obj : any, path : str):
     with open(path, "w+") as f:
@@ -25,12 +27,30 @@ def get_csv(path : str):
         return list(reader)
 
 def pickle_save(obj, path):
-    with open(path, "w+") as f:
-        pickle.dump(obj, f)
+    with open(path, "wb+") as f:
+        pickle.dump(obj, f, protocol=3)
 
 def pickle_get(path):
-    with open(path, "r") as f:
+    with open(path, "rb") as f:
         return pickle.load(f)
+
+def db_connect():
+    db = sqlalchemy.create_engine(postgres_connection_string)
+    engine = db.connect()
+    meta = sqlalchemy.MetaData(engine)
+    return (db, engine, meta)
+
+def get_bill(engine, bill_id):
+    return engine.execute("SELECT * FROM bills WHERE id = '{}'".format(bill_id)).fetchone()[1]
+
+def get_leg(engine, leg_id):
+    return engine.execute("SELECT * FROM leg WHERE id = '{}'".format(leg_id)).fetchone()[1]
+
+def get_leg_map(engine):
+    return dict(engine.execute("SELECT * FROM leg").fetchall())
+
+def get_bills_map(engine):
+    return dict(engine.execute("SELECT * FROM bills").fetchall())
 
 class PairMap:
     def __init__(self):
