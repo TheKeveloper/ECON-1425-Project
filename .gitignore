@@ -1,4 +1,6 @@
 data/
+plots/
 __pycache__/senator.cpython-37.pyc
 __pycache__/bill.cpython-37.pyc
 .ipynb_checkpoints/
+__pycache__/utils.cpython-37.pyc

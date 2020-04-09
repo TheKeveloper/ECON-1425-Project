@@ -4,6 +4,10 @@ import pickle
 import sqlalchemy
 from sqlalchemy import Column, Integer, Text  
 from sqlalchemy.dialects.postgresql import JSON, JSONB
+import matplotlib.pyplot as plt
+from scipy import stats
+import numpy as np
+
 
 postgres_connection_string = "postgresql://localhost/econ1425db"
 # a mapping that stores unordered pairs
@@ -70,6 +74,15 @@ def get_leg_map(engine):
 def get_bills_map(engine):
     return dict(engine.execute("SELECT * FROM bills").fetchall())
 
+def bills_stream(engine):
+    return engine.execute("SELECT * FROM bills")
+
+def get_one_bill(engine):
+    return engine.execute("SELECT * FROM bills LIMIT 1").fetchone()[1]
+
+def get_bills_count(engine):
+    return engine.execute("SELECT COUNT(*) FROM bills").fetchone()[0]
+
 def update(engine, table, leg_id, leg_doc):
     engine.execute(table.update().where(table.c.id == leg_id).values(doc = leg_doc))
 
@@ -82,6 +95,27 @@ def update_all(engine, table, map : dict, verbose = False, increment = 10**4):
             i += 1
             if i % increment == 0:
                 print("Finished {} of {}".format(i, total))
+
+def plot_reg(xs, ys, title = "", xlab = "", ylab = ""):
+    slope, intercept, rvalue, pvalue, stderr = stats.linregress(xs, ys)
+    plt.scatter(xs, ys, alpha = 0.1)
+    xbounds = np.array([min(xs), max(xs)])
+    plt.plot(xbounds, intercept + slope * xbounds, "-", c = "r", linewidth = 4)
+    plt.title('{}\nn={}\nSlope = {}, p = {}'.format(title, len(xs), slope, pvalue))
+    plt.xlabel(xlab)
+    plt.ylabel(ylab)
+    plt.show()
+
+def save_reg(xs, ys, title = "", xlab = "", ylab = ""):
+    slope, intercept, rvalue, pvalue, stderr = stats.linregress(xs, ys)
+    plt.scatter(xs, ys, alpha = 0.1)
+    xbounds = np.array([min(xs), max(xs)])
+    plt.plot(xbounds, intercept + slope * xbounds, "-", c = "r", linewidth = 4)
+    plt.title('{}\nn={}\nSlope = {}, p = {}'.format(title, len(xs), slope, pvalue))
+    plt.xlabel(xlab)
+    plt.ylabel(ylab)
+    plt.savefig(title + ".png")
+    plt.show()
 
 class PairMap:
     def __init__(self):
