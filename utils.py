@@ -62,6 +62,13 @@ def db_tables(meta):
         "leg" : leg_table
     }
 
+def get_all_congresses(leg_map : dict):
+    all_congresses = []
+    for key, leg in leg_map.items():
+        for congress in leg["congress_map"].values():
+            all_congresses.append({"leg_id" : key,  **congress})
+    return all_congresses
+
 def get_bill(engine, bill_id):
     return engine.execute("SELECT * FROM bills WHERE id = '{}'".format(bill_id)).fetchone()[1]
 
