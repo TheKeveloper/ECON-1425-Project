@@ -1,4 +1,5 @@
 data/
+analysis/data
 plots/
 __pycache__/senator.cpython-37.pyc
 __pycache__/bill.cpython-37.pyc
