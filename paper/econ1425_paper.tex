@@ -1,15 +1,33 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage{ksty}
+\usepackage[style=apa, hyperref=true]{biblatex}
 
+\usepackage{ksty}
 \title{ECON 1425 Final Paper}
 \author{Kevin Bi}
 \date{April 2020}
 
+\addbibresource{citations.bib}
 \begin{document}
 
 \maketitle
 
 \section{Introduction}
+
+\section{Literature Review}
+
+\section{Data and Methodology}
+\subsection{Data} 
+The data we used is obtained through a variety of sources. I connect the data for legislators using bioguide ids, which are unique identifiers assigned to all U.S. legislators. In some cases, the original data source did not have Bioguide-IDs for the legislator in question, in which case the data was linked using other identification methods, such as the older Thomas ID, matching the names automatically, and manual matching for cases where programmatic methods did not work. 
+
+\subsubsection{Bills}
+Data on bills, including their sponsors and cosponsors is obtained from ProPublica's \cite{propublica}. The dataset metadata on bills proposed in the senate and the house from every legislative session back to the 93rd Congress, which started in 1973. This data includes the sponsor of the bill, as well as the list of cosponsors for the bill. For the purposes of this analysis, I only examine bill proposals in the House and the Senate, which are original proposals and have full force of law, and do not consider other types of legislation like non-binding resolutions or amendments to existing bills. 
+
+\subsubsection{Legislators}
+The data on individual U.S. legislators, including their party affiliation, is obtained from the \cite{congress-legislators} dataset on current congressional legislators from GitHub. This also gives us data on each term that each legislator served. To label a particular legislator as being from a party, we have their party during each term. However, if a legislator changes parties at some point in their career, that legislator is simply labeled as being in ``multiple'' parties. Unfortunately, the data does not group a legislator in terms of which legislative sessions (congresses) they served, which is necessary for performing analysis with the bills data. Rather than attempting to manipulate the dates provided, I instead examine the legislator's sponsorship and cosponsorship behavior in each session. I list a legislator as being a member of a given chamber in a given session if they either sponsored or cosponsored at least one bill during that session in that chamber. While this may be an imperfect measure (for example, if some legislator did not cosponsor or sponsor any legislation in a given legislative session), I believe that any potential error is small enough in magnitude to not affect the overalll analysis.
+
+To calculate the experience of a legislator in any given session, I simply calculate how many sessions the legislator has previously served in (by the above measure). One problem with this method is that it does not account for legislator experience prior to 1973, but so long as our statistical analysis controls for individual legislator fixed effects, this should not be a problem. 
+
+\printbibliography
 
 \end{document}
