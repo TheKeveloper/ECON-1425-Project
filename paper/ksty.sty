@@ -1,0 +1,64 @@
+\def\R{\mathbb{R}}
+
+\usepackage{soul}
+\usepackage{color}
+\usepackage{amsthm, amsmath, amssymb}
+\providecommand{\code}[1]{\texttt{#1}}
+\providecommand{\solution}{\noindent\textbf{Solution: }}
+\providecommand{\reminder}{\hl{\textbf{FINISH THIS!!!}}}
+\providecommand{\checkthis}{{\sethlcolor{cyan}\hl{\textbf{CHECK THIS!!!}}}}
+\providecommand{\fixthis}{{\sethlcolor{red}\hl{\textbf{FIX THIS!!!}}}}
+\providecommand{\Q}{\mathbb{Q}}
+\providecommand{\Z}{\mathbb{Z}}
+\providecommand{\C}{\mathbb{C}}
+\providecommand{\F}{\mathbb{F}}
+\providecommand{\N}{\mathbb{N}}
+\providecommand{\degrees}{^\circ}
+\providecommand{\comment}[1]{\iffalse #1 \fi}
+\providecommand{\contradiction}{\Rightarrow\Leftarrow}
+\providecommand{\inflim}[1]{\lim_{#1 \to \infty}}
+\providecommand{\infsum}[2]{\sum_{#1 = #2}^\infty}
+\providecommand{\nroot}{\sqrt[n]}
+\renewcommand{\vec}[1]{\mathbf{#1}}
+\usepackage{amssymb}
+
+\providecommand{\SD}{\textnormal{SD}}
+\providecommand{\var}{\textnormal{Var}}             
+\providecommand{\cov}{\textnormal{Cov}}    
+\providecommand{\cor}{\textnormal{Corr}}   
+\providecommand{\Expo}{\textnormal{Expo}}
+\providecommand{\Geom}{\textnormal{Geom}}
+\providecommand{\indep}{\perp \!\!\! \perp}
+
+
+\providecommand{\partials}[2]{\frac{\partial #1}{\partial #2}}
+\providecommand{\set}[1]{\{#1\}}
+
+\setlength{\parskip}{0.5em}
+\setlength{\parindent}{0em}
+
+\usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+\usepackage{float}
+
+\providecommand{\image}[2][1]{
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=#1\linewidth]{#2}
+    \end{figure}
+}
+
+\providecommand{\hide}[1]{}
+\providecommand{\pvector}[1]{\begin{pmatrix}#1\end{pmatrix}}
+\providecommand{\Bvector}[1]{\begin{Bmatrix}#1\end{Bmatrix}}
+
+
+\providecommand{\interior}[1]{%
+    {\kern0pt#1}^{\mathrm{o}}%
+}
+
+\newtheorem{lemma}{Lemma}
+
+\DeclareMathOperator*{\argmax}{arg\,max}
+\DeclareMathOperator*{\argmin}{arg\,min}
