@@ -73,12 +73,30 @@ However, the above distance measure only works for pairwise comparisons. In orde
     \frac{1}{n} \sum_{i = 1}^n \|\vec{c}_i - \bar{\vec{c}}\|^2 \text{ where } \bar{\vec{c}} = \frac{1}{n} \sum_{i = 1}^n \vec{c}_i
 \end{align*}
 
-\subsection{Legislator Relations}
+\subsubsection{Legislator Relations}
 In order to measure the relationships between two legislators, I used the mutual cosponsorship of each other's bills. To construct the relationship measure between two legisators, there were a few criteria that such a measure should satisfy:
 \begin{description}
     \item[Mutual cosponsorship] The relationship should be considered strong only if each cosponsors legislation of the other. Strongly one-sided relationships, where one legislator frequently cosponsors the legislation of another legisator but does not receive many cosponsorships in return, should not be considered strong relations. 
-    \item[Weak dependence on shared time] Two legislators should not receive an insurmountably high relations score purely by virtue of having a long time in office together. However, it does make since for there to be some dependence on shared experience, but should not be a linera relationship.
-    \item[Linearity] If we have legislators $a$ and $b$, who cosponsor twice as much lesgislation with each other as legislators $c$ and $d$, then the relationship between $a$ and $b$ should be considered twice as strong.
+    \item[Weak dependence on shared time] Two legislators should not receive an insurmountably high relations score purely by virtue of having a long time in office together. However, it does make since for there to be some dependence on shared experience, but should not be a linear relationship.
+    \item[Linearity] If we have legislators $a$ and $b$, who cosponsor twice as much lesgislation with each other as legislators $c$ and $d$, then the relationship between $a$ and $b$ should be considered twice as strong as the relationship between $c$ and $d$. 
+\end{description}
+With these criteria in mind, I construct the following measure of consponsorship relations. Let $f(a, b)$ be the number of times that legislator $a$ cosponsored a piece of $b$'s legislation. Let $N(a, b)$ be the number of congresses that $a$ and $b$ shared with each other. Then we can define the relationship score between legislators $a$ and $b$ as follows:
+\begin{align*}
+    s(a, b) = \sqrt{\frac{f(a, b) f(b, a)}{N(a, b)}}
+\end{align*}
+We can verify the above properties:
+\begin{description}
+    \item[Mutual cosponsorship] Observe that $\partials{s}{f(a, b)} = \frac{1}{2} \frac{\sqrt{f(b, a)}}{\sqrt{f(a, b) N}}$. This is increasing in the ratio $\frac{f(b, a)}{f(a, b)}$, so the marginal benefit of an additional cosponsorship from $a$ to $b$ is greater if $b$ has cospnosored many of $a$'s bills, which is precisely the property we wanted. Observe further that for some fixed number of total cosponsorships between two legislators, the relationship score is maximized when they have equal cosponsors between them. 
+    \item[Weak dependence on shared time] Let $\bar{f}(a, b) = \frac{f(a, b)}{N(a, b)}$. We can rewrite the relationship score as
+    \begin{align*}
+        s(a, b) = \sqrt{N(a, b) \bar{f}(a, b) \bar{f}(b, a)}
+    \end{align*} 
+    Then we have that
+    \begin{align*}
+        \partials{s}{N(a, b)} \propto \frac{1}{\sqrt{N(a, b)}}
+    \end{align*} 
+    So the score is increasing in the number of shared years, but exhibits diminishing marginal returns to an additional year of shared experience. 
+    \item[Linearity] It is clear that if we multiply each of $f(a, b)$ and $f(b, a)$ by some constant $c$, the overall score increases by a factor of $c$. 
 \end{description}
 
 \printbibliography
