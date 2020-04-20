@@ -1,6 +1,8 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage[style=apa, hyperref=true]{biblatex}
+\usepackage[style=numeric, hyperref=true, backref=true]{biblatex}
+\usepackage{setspace}
+\onehalfspacing
 
 \usepackage{ksty}
 \title{ECON 1425 Final Paper}
@@ -13,20 +15,39 @@
 \maketitle
 
 \section{Introduction}
+The goal of this paper is to examine power and relationship dynamics in the United States Congress by studying the bill sponsorship and cosponsorship behavior of legislators. The benefit of studying these two types of behaviors is that they are public behaviors 
 
-\section{Literature Review}
+
+In particular, the benefit of studying cosponsorship behavior is that it features direct interaction between two legislators, and is unidirectional. When a legislator cosponsors a piece of legislation, they declare public support of the legislation in advance of it being formally moved to a vote. Bill sponsors often actively seek cosponsors as a way of signalling the bill's support in Congress in order to increase it's chances of moving to a floor vote and of eventually being passed into law \cite{crs_sponsorship}. Cosponsorship can therefore be viewed as a desired commodity, and those who are more influential in congress will also be able to obtain more cosponsors. 
+
+Moreover, since cosponsorship explicitly involves multiple parties, it can be viewed as a way to build relationships within Congress. Since the cosponsor offers something that the bill sponsor desires, and since the process of soliciting cosponsors may facilitate interactions between legislators, then it is plausible that legislators who cosponsor each other's bills would build a relationship. I attempt to study this affect by examining how the number of relationships a legislator has affects their decision to become a lobbyist after leaving politics, as effective lobbying requires good relationships in Congress. 
+
+In order to study this, I examine open source data on bill cosponsorships and sponsorships from the 93rd Congress to the 115th Congress (1973 - 2018). I combine this with data on committee assignments from 103rd to the 115th (1993 - 2018) Congress, and use a measure of committee prestige based on work by Charles Stewart, who created an ordinal ranking of committee prestige in the Senate and House based on the frequency of leaving assignments in each committee \cite{stewart-committee-values}.
+
+
+\section{Related Literature}
+The literature on bill cosponsorship is relatively sparse, but there is some literature that I use to inform th
 
 \section{Data and Methodology}
 \subsection{Data} 
 The data we used is obtained through a variety of sources. I connect the data for legislators using bioguide ids, which are unique identifiers assigned to all U.S. legislators. In some cases, the original data source did not have Bioguide-IDs for the legislator in question, in which case the data was linked using other identification methods, such as the older Thomas ID, matching the names automatically, and manual matching for cases where programmatic methods did not work. 
 
 \subsubsection{Bills}
-Data on bills, including their sponsors and cosponsors is obtained from ProPublica's \cite{propublica}. The dataset metadata on bills proposed in the senate and the house from every legislative session back to the 93rd Congress, which started in 1973. This data includes the sponsor of the bill, as well as the list of cosponsors for the bill. For the purposes of this analysis, I only examine bill proposals in the House and the Senate, which are original proposals and have full force of law, and do not consider other types of legislation like non-binding resolutions or amendments to existing bills. 
+Data on bills, including their sponsors and cosponsors is obtained from ProPublica's bulk data on bills \cite{propublica}. The dataset metadata on bills proposed in the senate and the house from every legislative session back to the 93rd Congress, which started in 1973. This data includes the sponsor of the bill, as well as the list of cosponsors for the bill. For the purposes of this analysis, I only examine bill proposals in the House and the Senate, which are original proposals and have full force of law, and do not consider other types of legislation like non-binding resolutions or amendments to existing bills. 
 
 \subsubsection{Legislators}
-The data on individual U.S. legislators, including their party affiliation, is obtained from the \cite{congress-legislators} dataset on current congressional legislators from GitHub. This also gives us data on each term that each legislator served. To label a particular legislator as being from a party, we have their party during each term. However, if a legislator changes parties at some point in their career, that legislator is simply labeled as being in ``multiple'' parties. Unfortunately, the data does not group a legislator in terms of which legislative sessions (congresses) they served, which is necessary for performing analysis with the bills data. Rather than attempting to manipulate the dates provided, I instead examine the legislator's sponsorship and cosponsorship behavior in each session. I list a legislator as being a member of a given chamber in a given session if they either sponsored or cosponsored at least one bill during that session in that chamber. While this may be an imperfect measure (for example, if some legislator did not cosponsor or sponsor any legislation in a given legislative session), I believe that any potential error is small enough in magnitude to not affect the overalll analysis.
+The data on individual U.S. legislators, including their party affiliation, is obtained from the ``@unitedstates project'' dataset on current congressional legislators from GitHub \cite{congress-legislators}. This also gives us data on each term that each legislator served. To label a particular legislator as being from a party, we have their party during each term. However, if a legislator changes parties at some point in their career, that legislator is simply labeled as being in ``multiple'' parties. Unfortunately, the data does not group a legislator in terms of which legislative sessions (congresses) they served, which is necessary for performing analysis with the bills data. Rather than attempting to manipulate the dates provided, I instead examine the legislator's sponsorship and cosponsorship behavior in each session. I list a legislator as being a member of a given chamber in a given session if they either sponsored or cosponsored at least one bill during that session in that chamber. While this may be an imperfect measure (for example, if some legislator did not cosponsor or sponsor any legislation in a given legislative session), I believe that any potential error is small enough in magnitude to not affect the overalll analysis.
 
 To calculate the experience of a legislator in any given session, I simply calculate how many sessions the legislator has previously served in (by the above measure). One problem with this method is that it does not account for legislator experience prior to 1973, but so long as our statistical analysis controls for individual legislator fixed effects, this should not be a problem. 
+
+\subsubsection{Committee Assignment Data}
+Committee assignment and ranking data was obtained from a dataset gathered by Woon and Stewart \cite{stewart-committee-assignments}. This data is from the 103rd congress to the 115th congress, and includes all committee assignments for all individualls. I consider an individual as being assigned to a particular committee if they were assigned to that committee at any point within the session in order to avoid dealing with date issues. This means that as long as a given legislator is assigned to a particular committee at some point in the session, they will be considered members of that commmittee for the purposes of this analysis. 
+
+
+The data on the committee assignments was linked with the legislators data by attempting to name match, as only the full name of the legislator was provided in the originall dataset. I first based the matching on the last name, and then if there were multiple individuals, on a fuzzy match of the first name. If this automated linking method was inconclusive at all, I manually linked the legislators with the committee assignments. 
+
+\subsubsection{Committee Rankings}
+The committee ranking data comes from a paper written by Charles Stewart III \cite{stewart-committee-values}. I manually linked the names of the committees with the names of the committees given in the committee assignment data. This data contained a ranking of the committee assignment in each house, as well as a z-score of the committee's coefficient using the Grosewart method, which calculates an implied probability of an individual giving up a particular committee assignment in favor of another. There were rankings provided by chamber, for two different eras, from the 81st-95th congress, and 96th-112th congress. I used the rankings for the latter era because it overlaps directly with the time frame that I am examining.
 
 \printbibliography
 

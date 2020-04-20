@@ -1,5 +1,7 @@
 library(plm)
 df <- read.csv("data/all_congresses.csv"); df$after_reform <- (df$congress > 103) * 1
+recent_df <- df[df$congress >= 103, ]
+
 
 fields <- list(
   congress = "congress",
@@ -47,7 +49,7 @@ reg_result <- function(data, outcome, independent, controls = c(), fe = T,
     s <- summary(lm(reg_formula, data = data))
   }
   if(full) {
-    return(s$coefficients)
+    return(s)
   }
   else {
     if (fe) {
@@ -61,16 +63,20 @@ reg_result <- function(data, outcome, independent, controls = c(), fe = T,
 
 all_leg_regs <- function(independent, controls, fe = T, fe_index = c("leg_id", "congress"), full = F){
   return(list(
-      bills_cosponsored = reg_result(df, fields$bills_cosponsored, independent, controls = controls, 
+      bills_cosponsored = reg_result(recent_df, fields$bills_cosponsored, independent, controls = controls, 
                                      fe = fe, fe_index = fe_index, full = full),
-      bills_sponsored = reg_result(df, fields$bills_sponsored, independent, controls = controls, 
+      bills_sponsored = reg_result(recent_df, fields$bills_sponsored, independent, controls = controls, 
                                      fe = fe, fe_index = fe_index, full = full),
-      cosponsors_per_bill = reg_result(df, fields$cosponsors_per_bill, independent, controls = controls, 
+      cosponsors_per_bill = reg_result(recent_df, fields$cosponsors_per_bill, independent, controls = controls, 
                                    fe = fe, fe_index = fe_index, full = full),
-      cosponsored_sponsored_ratio = reg_result(df, fields$cosponsored_sponsored_ratio, independent, controls = controls, 
+      cosponsored_sponsored_ratio = reg_result(recent_df, fields$cosponsored_sponsored_ratio, independent, controls = controls, 
                                        fe = fe, fe_index = fe_index, full = full)
   ))
 }
+
+reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored, 
+               controls = c(fields$experience, fields$chamber, fields$leadership, fields$committee_count, 
+                            fields$committee_min_rank, fields$committee_rank_recips), full = T)
 
 # FE regressions on experience
 experience_regs <- all_leg_regs(fields$experience, controls = c(fields$chamber_factor))
@@ -79,7 +85,7 @@ experience_regs <- all_leg_regs(fields$experience, controls = c(fields$chamber_f
 committee_count_no_exp_regs <- all_leg_regs(fields$committee_count, controls = c(fields$chamber_factor))
 
 # FE regressions on committee count, experience control
-committee_count_regs <- all_leg_regs(fields$committee_count, controls = c(fields$experience, fields$chamber_factor))
+committee_count_regs <- all_leg_regs(fields$committee_count, controls = c(fields$experience, fields$chamber_factor), full = F)
 
 # FE regressions on min committee rank, no experience control
 committee_min_ranks_no_exp_regs <- all_leg_regs(fields$committee_min_rank, controls = c(fields$chamber_factor))
@@ -109,6 +115,9 @@ df2 <- read.csv("data/former_legs.csv")
 
 summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))
 
+summary(lm(lobbyist ~ remaining_friends + experience + factor(last_congress) + factor(chamber) + factor(party), data = df2))
+
+summary(lm(lobbyist ~ factor(party) + factor(last_congress) + factor(chamber), data = df2))
 
 df2$chamber_indicator <- (df2$chamber == "senate") * 1
 
@@ -116,10 +125,18 @@ sum(df2$lobbyist) / length(df2$lobbyist)
 
 bills_df <- read.csv("data/bill_infos.csv")
 
+recent_bills_df <- bills_df[bills_df$congress >= 103, ]
+
 bills_df$after_reform = bills_df$congress
 
-reg_result(bills_df, "same_party_cosponsors_prop", "cosponsor_leadership", 
+reg_result(recent_bills_df, "same_party_cosponsors_prop", "cosponsor_leadership", 
            controls = c("max_cosponsor_experience", "enacted", fields$chamber_factor, fields$congress_factor, fields$sponsor_party_factor), fe = F, full = T)
 
            
+reg_result(recent_bills_df, fields$enacted, "total_cosponsors", controls = c(fields$chamber_factor, fields$congress_factor)
+              , fe = F, full = T)
+
+reg_result(recent_bills_df, "total_cosponsors", "max_cosponsor_committee_rank_recips",  
+           controls = c(fields$chamber_factor, fields$congress_factor, "cosponsor_leadership", "max_cosponsor_experience"),
+           fe = F, full = T)
            
