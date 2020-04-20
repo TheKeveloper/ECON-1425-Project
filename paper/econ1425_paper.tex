@@ -99,6 +99,15 @@ We can verify the above properties:
     \item[Linearity] It is clear that if we multiply each of $f(a, b)$ and $f(b, a)$ by some constant $c$, the overall score increases by a factor of $c$. 
 \end{description}
 
+\subsubsection{Committee Prestige}
+Because in a given legislative session, legislators can be on multiple committees at one time, we need to aggregate the committee ``prestige'' of a legislator in a given session. I therefore offer four possible such aggregation measures:
+\begin{description}
+    \item[Committee count] This is the most straightforward, and simply counts the number of committees a given legislator is assigned to in a session. However, the problem with this measure is that it does not take into account the ranking of the committee, but only the number committees.
+    \item[Minimum committee rank] This computes the minimum rank of a legislator's assigned committeees in a given congressional sesssion. Since a lower numerical rank is a more prestigous committee (rank 1 is the most prestigious). This is an accurate measure if we believe that only the most prestigious committee an individual is assigned to matters, and that more prestige is not offered by being on multiple high ranking committees. This also a purely ordinal ranking, and woudl not account for the top ranking committee being significantly more prestigious than the second rankng committee.
+    \item[Maximum committee coefficient] This measure takes the maximum Grosewart coefficient (z-scored) of the legislator's assigned committee for a given legislative session. This also does not take into account multiple committees, but provides some cardinal score rather than just an ordinal ranking. 
+    \item[Sum of rank reciprocals] This takes the sum of the reciprocals of the ranks of all of the committees a legislator is assigned to for a legislative session. This means that more prestigious committees disproportionately increase ranking, while also taking into account less prestigious committee assignments. This measure makes sense if we believe that the total prestige of all committees is what matters, but it is disadvantageous in that this measure is more ad hoc than the others. I considered using the sum of the coefficients, but the problem is that some of the coefficients are negative, and it does not seem like an additional assignment to a less prestigious committee should negatively affect prestige. 
+\end{description}
+
 \printbibliography
 
 \end{document}
