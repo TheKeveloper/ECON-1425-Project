@@ -58,7 +58,20 @@ Data on the ideology of legislators is based on Nominate scores, which assign id
 \subsubsection{Lobbying}
 Data about the post-politics lobbying careers of legislators was scraped from the Center of Responsive Politics ``Revolving Door'' website \cite{revolving-door}. I wrote a web-scraper to scrape the names of the former legislators, as well as whether the website indicated they had become a lobbyist after their political career. Unfortunately, this means that the data only offers a binary indicator of whether they ever became a lobbyist after politics. More granular data was possible and available in image format on their website, but not easily scrapable. I emailed the lobbying researcher at the Center for Responsive Politics to try and obtain machine-readable granular data on post-politics career paths, but did not receive a response. 
 
+\subsection{Methodology}
+For many of the variables of analysis, they required some sort of aggregation in order to perform regression analysis. The construction of those measures is detailed here. 
 
+\subsubsection{Cospnosor Ideology}
+In order to examine the ideological diversity of the cosponsors of a given bill, I used two approaches. The first was relatively straightforward, and measures the proportion of cosponsors on a bill who were of the same party as the sponsor of the bills. 
+
+The second approach uses the Nominate scores of the legislators. In order to calculate the ideological distance between any two legislators, I calculate the Euclidean distance. So for given legislators, $\vec{a}, \vec{b}$ with nominate scores $(a_1, a_2)$ and $(b_1, b_2)$, respectively, I define their ideological distance by
+\begin{align*}
+    d(\vec{a}, \vec{b}) = \|\vec{a} - \vec{b}\| = \sqrt{(a_1 - b_1)^2 + (a_2 - b_2)^2}
+\end{align*}
+However, the above distance measure only works for pairwise comparisons. In order to measure the average ideological variation in a bill, I compute the two dimensional variance of the cosponsors and the sponsor. So if the sponsors and cosponsors on the bill are $\vec{c}_1, \dots, \vec{c}_n$, the ideological variance of the cosponsors is calculated as
+\begin{align*}
+    \frac{1}{n} \sum_{i = 1}^n \|\vec{c}_i - \bar{\vec{c}}\|^2 \text{ where } \bar{\vec{c}} = \frac{1}{n} \sum_{i = 1}^n \vec{c}_i
+\end{align*}
 
 \printbibliography
 
