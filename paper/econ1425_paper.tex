@@ -1,6 +1,6 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
-\usepackage[style=numeric, hyperref=true, backref=true]{biblatex}
+\usepackage[style=numeric, hyperref=true, backref=true, backend=biber]{biblatex}
 \usepackage{setspace}
 \onehalfspacing
 
@@ -22,11 +22,14 @@ In particular, the benefit of studying cosponsorship behavior is that it feature
 
 Moreover, since cosponsorship explicitly involves multiple parties, it can be viewed as a way to build relationships within Congress. Since the cosponsor offers something that the bill sponsor desires, and since the process of soliciting cosponsors may facilitate interactions between legislators, then it is plausible that legislators who cosponsor each other's bills would build a relationship. I attempt to study this affect by examining how the number of relationships a legislator has affects their decision to become a lobbyist after leaving politics, as effective lobbying requires good relationships in Congress. 
 
+One final benefit of examining sponsorship and cosponsorship is that it typically happens only once per bill, and is explicitly removed from a bill. This is in contrast to voting on bills, which can occur multiple times, and these indicator only exists if the bill actually makes it to the floor, whereas cosponsorship data is available for any bill that is ever proposed, regardless of whether it is ever voted on or even moves past the committee stage. 
+
 In order to study this, I examine open source data on bill cosponsorships and sponsorships from the 93rd Congress to the 115th Congress (1973 - 2018). I combine this with data on committee assignments from 103rd to the 115th (1993 - 2018) Congress, and use a measure of committee prestige based on work by Charles Stewart, who created an ordinal ranking of committee prestige in the Senate and House based on the frequency of leaving assignments in each committee \cite{stewart-committee-values}.
 
 
 \section{Related Literature}
-The literature on bill cosponsorship is relatively sparse, but there is some literature that I use to inform th
+The literature on bill cosponsorship is relatively sparse, but there is some literature that is related to my goals in this paper and provide useful insights. \reminder
+
 
 \section{Data and Methodology}
 \subsection{Data} 
@@ -48,6 +51,14 @@ The data on the committee assignments was linked with the legislators data by at
 
 \subsubsection{Committee Rankings}
 The committee ranking data comes from a paper written by Charles Stewart III \cite{stewart-committee-values}. I manually linked the names of the committees with the names of the committees given in the committee assignment data. This data contained a ranking of the committee assignment in each house, as well as a z-score of the committee's coefficient using the Grosewart method, which calculates an implied probability of an individual giving up a particular committee assignment in favor of another. There were rankings provided by chamber, for two different eras, from the 81st-95th congress, and 96th-112th congress. I used the rankings for the latter era because it overlaps directly with the time frame that I am examining.
+
+\subsubsection{Ideology}
+Data on the ideology of legislators is based on Nominate scores, which assign ideological ratings on $[-1 , 1]$ in two different dimentions ideological dimensions. The first dimensions approximately represents economic ideology, and the second dimension approximately represents ideology on cultural and lifestyle issues. The Nominate scores were obtained from VoteView \cite{nominate}.
+
+\subsubsection{Lobbying}
+Data about the post-politics lobbying careers of legislators was scraped from the Center of Responsive Politics ``Revolving Door'' website \cite{revolving-door}. I wrote a web-scraper to scrape the names of the former legislators, as well as whether the website indicated they had become a lobbyist after their political career. Unfortunately, this means that the data only offers a binary indicator of whether they ever became a lobbyist after politics. More granular data was possible and available in image format on their website, but not easily scrapable. I emailed the lobbying researcher at the Center for Responsive Politics to try and obtain machine-readable granular data on post-politics career paths, but did not receive a response. 
+
+
 
 \printbibliography
 

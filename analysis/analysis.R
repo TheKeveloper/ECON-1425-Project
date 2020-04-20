@@ -2,6 +2,9 @@ library(plm)
 df <- read.csv("data/all_congresses.csv"); df$after_reform <- (df$congress > 103) * 1
 recent_df <- df[df$congress >= 103, ]
 
+filter_nas <- function(v) {
+  return(v[!is.na(v)])
+}
 
 fields <- list(
   congress = "congress",
@@ -138,5 +141,15 @@ reg_result(recent_bills_df, fields$enacted, "total_cosponsors", controls = c(fie
 
 reg_result(recent_bills_df, "total_cosponsors", "max_cosponsor_committee_rank_recips",  
            controls = c(fields$chamber_factor, fields$congress_factor, "cosponsor_leadership", "max_cosponsor_experience"),
+           fe = F, full = T)
+
+reg_result(recent_bills_df, fields$nominate_variance, fields$leadership, 
+           c(fields$chamber_factor, fields$congress_factor, fields$experience, "same_party_cosponsors_prop", 
+             "max_cosponsor_experience", "total_cosponsors"),
+           fe = F, full = T)
+
+reg_result(recent_bills_df, "same_party_cosponsors_prop", fields$leadership,
+           c(fields$chamber_factor, fields$congress_factor, fields$experience,
+             "max_cosponsor_experience", "total_cosponsors"),
            fe = F, full = T)
            
