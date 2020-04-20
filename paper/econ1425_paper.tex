@@ -61,7 +61,7 @@ Data about the post-politics lobbying careers of legislators was scraped from th
 \subsection{Methodology}
 For many of the variables of analysis, they required some sort of aggregation in order to perform regression analysis. The construction of those measures is detailed here. 
 
-\subsubsection{Cospnosor Ideology}
+\subsubsection{Cosponsor Ideology}
 In order to examine the ideological diversity of the cosponsors of a given bill, I used two approaches. The first was relatively straightforward, and measures the proportion of cosponsors on a bill who were of the same party as the sponsor of the bills. 
 
 The second approach uses the Nominate scores of the legislators. In order to calculate the ideological distance between any two legislators, I calculate the Euclidean distance. So for given legislators, $\vec{a}, \vec{b}$ with nominate scores $(a_1, a_2)$ and $(b_1, b_2)$, respectively, I define their ideological distance by
@@ -72,6 +72,14 @@ However, the above distance measure only works for pairwise comparisons. In orde
 \begin{align*}
     \frac{1}{n} \sum_{i = 1}^n \|\vec{c}_i - \bar{\vec{c}}\|^2 \text{ where } \bar{\vec{c}} = \frac{1}{n} \sum_{i = 1}^n \vec{c}_i
 \end{align*}
+
+\subsection{Legislator Relations}
+In order to measure the relationships between two legislators, I used the mutual cosponsorship of each other's bills. To construct the relationship measure between two legisators, there were a few criteria that such a measure should satisfy:
+\begin{description}
+    \item[Mutual cosponsorship] The relationship should be considered strong only if each cosponsors legislation of the other. Strongly one-sided relationships, where one legislator frequently cosponsors the legislation of another legisator but does not receive many cosponsorships in return, should not be considered strong relations. 
+    \item[Weak dependence on shared time] Two legislators should not receive an insurmountably high relations score purely by virtue of having a long time in office together. However, it does make since for there to be some dependence on shared experience, but should not be a linera relationship.
+    \item[Linearity] If we have legislators $a$ and $b$, who cosponsor twice as much lesgislation with each other as legislators $c$ and $d$, then the relationship between $a$ and $b$ should be considered twice as strong.
+\end{description}
 
 \printbibliography
 
