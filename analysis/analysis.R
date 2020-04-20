@@ -33,7 +33,7 @@ cross <- function(a, b) {
   return(paste(c(a, b), collapse = "*"))
 }
 reg_result <- function(data, outcome, independent, controls = c(), fe = T, 
-                       fe_index = c("leg_id", "congress"), full = F) {
+                       fe_index = c("leg_id", "congress"), full = T) {
   variables <- c(independent, controls)
   reg_formula <- as.formula(paste(c(outcome, 
           paste(
@@ -42,37 +42,32 @@ reg_result <- function(data, outcome, independent, controls = c(), fe = T,
           )),
     collapse = " ~ "))
   if(fe) {
-    s <- summary(plm(reg_formula,
+    s <- plm(reg_formula,
                      index = fe_index,
                      effect = "twoway",
                      model = "within",
-                     data = data))
+                     data = data)
   }
   else {
-    s <- summary(lm(reg_formula, data = data))
+    s <- lm(reg_formula, data = data)
   }
   if(full) {
     return(s)
   }
   else {
-    if (fe) {
-      return(s$coefficients[1, ])
-    }
-    else {
-      return(s$coefficients[2, ])
-    }
+    return(summary(s))
   }
 }
 
-all_leg_regs <- function(independent, controls, fe = T, fe_index = c("leg_id", "congress"), full = F){
+all_leg_regs <- function(independent, controls, fe = T, fe_index = c("leg_id", "congress"), full = T, data = recent_df){
   return(list(
-      bills_cosponsored = reg_result(recent_df, fields$bills_cosponsored, independent, controls = controls, 
+      bills_cosponsored = reg_result(data, fields$bills_cosponsored, independent, controls = controls, 
                                      fe = fe, fe_index = fe_index, full = full),
-      bills_sponsored = reg_result(recent_df, fields$bills_sponsored, independent, controls = controls, 
+      bills_sponsored = reg_result(data, fields$bills_sponsored, independent, controls = controls, 
                                      fe = fe, fe_index = fe_index, full = full),
-      cosponsors_per_bill = reg_result(recent_df, fields$cosponsors_per_bill, independent, controls = controls, 
+      cosponsors_per_bill = reg_result(data, fields$cosponsors_per_bill, independent, controls = controls, 
                                    fe = fe, fe_index = fe_index, full = full),
-      cosponsored_sponsored_ratio = reg_result(recent_df, fields$cosponsored_sponsored_ratio, independent, controls = controls, 
+      cosponsored_sponsored_ratio = reg_result(data, fields$cosponsored_sponsored_ratio, independent, controls = controls, 
                                        fe = fe, fe_index = fe_index, full = full)
   ))
 }
@@ -81,14 +76,17 @@ reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored,
                controls = c(fields$experience, fields$chamber, fields$leadership, fields$committee_count, 
                             fields$committee_min_rank, fields$committee_rank_recips), full = T)
 
+# OLS regressions on experience
+experience_regs <- all_leg_regs(fields$experience, controls = c(fields$chamber_factor), fe = F)
+
 # FE regressions on experience
-experience_regs <- all_leg_regs(fields$experience, controls = c(fields$chamber_factor))
+experience_fe_regs <- all_leg_regs(fields$experience, controls = c(fields$chamber_factor), data = recent_df)
 
 # FE regressions on committee count, no experience control
 committee_count_no_exp_regs <- all_leg_regs(fields$committee_count, controls = c(fields$chamber_factor))
 
 # FE regressions on committee count, experience control
-committee_count_regs <- all_leg_regs(fields$committee_count, controls = c(fields$experience, fields$chamber_factor), full = F)
+committee_count_regs <- all_leg_regs(fields$committee_count, controls = c(fields$experience, fields$chamber_factor), full = T)
 
 # FE regressions on min committee rank, no experience control
 committee_min_ranks_no_exp_regs <- all_leg_regs(fields$committee_min_rank, controls = c(fields$chamber_factor))
@@ -108,12 +106,33 @@ committee_rank_recips_no_exp_regs <- all_leg_regs(fields$committee_rank_recips, 
 # FE regressions on committee rank recips, experience control
 committee_rank_recips_regs <- all_leg_regs(fields$committee_rank_recips, controls = c(fields$experience, fields$chamber_factor))
 
+leadership_regs <- all_leg_regs(fields$leadership, controls = c(fields$experience, fields$chamber_factor))
+
 all_leg_regs(cross(fields$max_coeff, fields$after_reform), 
              controls = c(fields$committe_max_coeff, fields$after_reform, fields$experience, fields$chamber_factor), 
              fe = T, full = T)
 
 lm(cosponsors_per_bill ~ max_coeff + after_reform + factor(chamber) + committee_max_coeff * after_reform, data = df)
 
+# stargazer cheatsheet: https://www.jakeruss.com/cheatsheets/stargazer/
+
+stargazer(experience_regs$cosponsors_per_bill,  
+          experience_fe_regs$cosponsors_per_bill, 
+          committee_count_regs$cosponsors_per_bill, 
+          committee_min_ranks_regs$cosponsors_per_bill,
+          committee_max_coeff_regs$cosponsors_per_bill,
+          committee_rank_recips_regs$cosponsors_per_bill,
+          leadership_regs$cosponsors_per_bill,
+          omit.stat = c("f", "ser"), 
+          title = "Cosponsors per bill", 
+          add.lines = list(c("Fixed effects?", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")),
+          order = c(7, 6, 1, 2, 3, 4, 5, 8),
+          covariate.labels = c("Chamber (Senate)", "Experience (# of sessions)", "Committee count", 
+                               "Min committee rank", "Max committee coefficient", "Committee rank reciprocals", 
+                               "Leadership"),
+          dep.var.labels = c("Number of cosponsors per bill sponsored"), 
+          star.cutoffs = c(0.05, 0.01, 0.001)
+          )
 df2 <- read.csv("data/former_legs.csv")
 
 summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))

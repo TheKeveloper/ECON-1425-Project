@@ -3,8 +3,13 @@
 \usepackage[style=numeric, hyperref=true, backref=true, backend=biber]{biblatex}
 \usepackage{setspace}
 \onehalfspacing
+\usepackage[margin=1.5in]{geometry}
 
 \usepackage{ksty}
+\usepackage{hyperref}
+\usepackage{adjustbox}
+\usepackage[figuresleft
+]{rotating}
 \title{ECON 1425 Final Paper}
 \author{Kevin Bi}
 \date{April 2020}
@@ -48,6 +53,8 @@ Committee assignment and ranking data was obtained from a dataset gathered by Wo
 
 
 The data on the committee assignments was linked with the legislators data by attempting to name match, as only the full name of the legislator was provided in the originall dataset. I first based the matching on the last name, and then if there were multiple individuals, on a fuzzy match of the first name. If this automated linking method was inconclusive at all, I manually linked the legislators with the committee assignments. 
+
+This dataset also includes data on whether the legislator was in a leadership position. For the purposes of this paper, I classify a legislator that is a majority/minority leader, a majority/minority whip, or house speaker as being in a leadership role. 
 
 \subsubsection{Committee Rankings}
 The committee ranking data comes from a paper written by Charles Stewart III \cite{stewart-committee-values}. I manually linked the names of the committees with the names of the committees given in the committee assignment data. This data contained a ranking of the committee assignment in each house, as well as a z-score of the committee's coefficient using the Grosewart method, which calculates an implied probability of an individual giving up a particular committee assignment in favor of another. There were rankings provided by chamber, for two different eras, from the 81st-95th congress, and 96th-112th congress. I used the rankings for the latter era because it overlaps directly with the time frame that I am examining.
@@ -108,6 +115,179 @@ Because in a given legislative session, legislators can be on multiple committee
     \item[Sum of rank reciprocals] This takes the sum of the reciprocals of the ranks of all of the committees a legislator is assigned to for a legislative session. This means that more prestigious committees disproportionately increase ranking, while also taking into account less prestigious committee assignments. This measure makes sense if we believe that the total prestige of all committees is what matters, but it is disadvantageous in that this measure is more ad hoc than the others. I considered using the sum of the coefficients, but the problem is that some of the coefficients are negative, and it does not seem like an additional assignment to a less prestigious committee should negatively affect prestige. 
 \end{description}
 
+\section{Results} 
+\subsection{Legislator behavior overtime}
+The first type of behavior I considered was how an individual's sponsorship and cosponsorship behavior changes as they move from a position of low prestige to a position of high prestige. In these regressions, I regress on the behavior of a legislator in each legislative session, and fixed effects regressions control for both individual legislator fixed effects and legislative session (time) fixed effects. Each data point is a specific legislator's behavior in a specific legislative session. In each of the following regressions, I regress the outcome variable against the experience of the individual, against the measures of aggregate committee value, and against whether the individual was in a party leadership position. 
+
+For each, I include the result of a pure OLS regression against experience for reference, but I do not believe this to be an accurate gauge. Individual fixed effects must be controlled for because legislators that have managed to stay in office may exhibit particular types of legislative behavior. Furthermore, session (time) fixed effects must also be controlled for as legislative activity in general has increased over time, and time is colinear with experience. 
+
+\subsubsection{Bills cosponsored}
+Table \ref{tab:bills_cosponsored} displays the results of regressions of number of bills cospnsored by each legislator in a given session against their various measures of prestige during that session. Note that while the Min committee rank coefficient is negative, this should be interpreted as more prestigious committees result in more bill cosponsorship, as larger numerical rank corresponds to a less prestigious committee. In general, these results suggest that as a legislator's prestige increases in terms of committees, they cosponsor more, but that party leadership tends to cosponsor less. s
+
+% Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
+% Date and time: Mon, Apr 20, 2020 - 16:04:34
+\begin{table}[!htbp]
+    \noindent
+    \caption{Bills cosponsored} 
+    \label{tab:bills_cosponsored} 
+    \makebox[\textwidth]{\adjustbox{max width= 0.75\paperwidth}{%
+    \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+        \\[-1.8ex]\hline 
+        \hline \\[-1.8ex] 
+         & \multicolumn{7}{c}{\textit{Dependent variable:}} \\ 
+        \cline{2-8} 
+        \\[-1.8ex] & \multicolumn{7}{c}{Number of bills cosponsored in legislative session} \\ 
+        \\[-1.8ex] & \textit{OLS} & \multicolumn{6}{c}{\textit{panel}} \\ 
+         & \textit{} & \multicolumn{6}{c}{\textit{linear}} \\ 
+        \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7)\\ 
+        \hline \\[-1.8ex] 
+         Chamber (Senate) & $-$64.054$^{***}$ & $-$25.788$^{***}$ & $-$42.673$^{***}$ & $-$28.591$^{***}$ & $-$27.618$^{***}$ & $-$32.192$^{***}$ & $-$27.049$^{***}$ \\ 
+          & (3.456) & (6.160) & (6.713) & (5.984) & (5.974) & (6.215) & (6.122) \\ 
+          & & & & & & & \\ 
+         Experience (\# of sessions) & 0.879$^{**}$ & $-$2.002 & $-$1.997 & $-$2.913 & $-$2.950 & $-$2.720 & $-$1.393 \\ 
+          & (0.307) & (3.619) & (3.607) & (3.538) & (3.537) & (3.608) & (3.597) \\ 
+          & & & & & & & \\ 
+         Committee count &  &  & 7.376$^{***}$ &  &  &  &  \\ 
+          &  &  & (1.185) &  &  &  &  \\ 
+          & & & & & & & \\ 
+         Min committee rank &  &  &  & $-$0.641$^{**}$ &  &  &  \\ 
+          &  &  &  & (0.236) &  &  &  \\ 
+          & & & & & & & \\ 
+         Max committee coefficient &  &  &  &  & 4.503$^{**}$ &  &  \\ 
+          &  &  &  &  & (1.475) &  &  \\ 
+          & & & & & & & \\ 
+         Committee rank reciprocals &  &  &  &  &  & 29.272$^{***}$ &  \\ 
+          &  &  &  &  &  & (4.457) &  \\ 
+          & & & & & & & \\ 
+         Leadership &  &  &  &  &  &  & $-$81.307$^{***}$ \\ 
+          &  &  &  &  &  &  & (9.403) \\ 
+          & & & & & & & \\ 
+         Constant & 215.971$^{***}$ &  &  &  &  &  &  \\ 
+          & (1.983) &  &  &  &  &  &  \\ 
+          & & & & & & & \\ 
+        \hline \\[-1.8ex] 
+        Fixed effects? & No & Yes & Yes & Yes & Yes & Yes & Yes \\ 
+        Observations & 7,138 & 7,138 & 7,138 & 7,021 & 7,021 & 7,138 & 7,138 \\ 
+        R$^{2}$ & 0.046 & 0.003 & 0.010 & 0.005 & 0.006 & 0.011 & 0.016 \\ 
+        Adjusted R$^{2}$ & 0.046 & $-$0.254 & $-$0.245 & $-$0.252 & $-$0.252 & $-$0.245 & $-$0.238 \\ 
+        \hline 
+        \hline \\[-1.8ex] 
+        \textit{Note:}  & \multicolumn{7}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+        \end{tabular} 
+    }}
+  \end{table} 
+
+
+\subsubsection{Bills sponsored}
+The same regression as above is conducted except with the dependent variable as the number of bills a legislator sponsors in a legislative session. The results, displayed in Table \ref{tab:bills_sponsored}, are largely the same as with cosponsorship, except that more experienced legislators tend to sponsor more legislation (although non statistically significantly so).
+\begin{table}[!htbp]
+    \noindent
+    \caption{Bills sponsored} 
+    \label{tab:bills_sponsored} 
+    \makebox[\textwidth]{\adjustbox{max width= 0.75\paperwidth}{%
+    \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+        \\[-1.8ex]\hline 
+        \hline \\[-1.8ex] 
+         & \multicolumn{7}{c}{\textit{Dependent variable:}} \\ 
+        \cline{2-8} 
+        \\[-1.8ex] & \multicolumn{7}{c}{Number of bills sponsored in legislative session} \\ 
+        \\[-1.8ex] & \textit{OLS} & \multicolumn{6}{c}{\textit{panel}} \\ 
+         & \textit{} & \multicolumn{6}{c}{\textit{linear}} \\ 
+        \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7)\\ 
+        \hline \\[-1.8ex] 
+         Chamber (Senate) & 17.099$^{***}$ & 15.613$^{***}$ & 12.258$^{***}$ & 15.277$^{***}$ & 15.497$^{***}$ & 13.788$^{***}$ & 15.543$^{***}$ \\ 
+          & (0.418) & (0.983) & (1.069) & (0.980) & (0.975) & (0.983) & (0.983) \\ 
+          & & & & & & & \\ 
+         Experience (\# of sessions) & 0.603$^{***}$ & 0.230 & 0.231 & 0.015 & $-$0.062 & 0.026 & 0.264 \\ 
+          & (0.037) & (0.578) & (0.575) & (0.580) & (0.577) & (0.571) & (0.577) \\ 
+          & & & & & & & \\ 
+         Committee count &  &  & 1.466$^{***}$ &  &  &  &  \\ 
+          &  &  & (0.189) &  &  &  &  \\ 
+          & & & & & & & \\ 
+         Min committee rank &  &  &  & $-$0.138$^{***}$ &  &  &  \\ 
+          &  &  &  & (0.039) &  &  &  \\ 
+          & & & & & & & \\ 
+         Max committee coefficient &  &  &  &  & 1.827$^{***}$ &  &  \\ 
+          &  &  &  &  & (0.241) &  &  \\ 
+          & & & & & & & \\ 
+         Committee rank reciprocals &  &  &  &  &  & 8.345$^{***}$ &  \\ 
+          &  &  &  &  &  & (0.705) &  \\ 
+          & & & & & & & \\ 
+         Leadership &  &  &  &  &  &  & $-$4.555$^{**}$ \\ 
+          &  &  &  &  &  &  & (1.509) \\ 
+          & & & & & & & \\ 
+         Constant & 10.813$^{***}$ &  &  &  &  &  &  \\ 
+          & (0.240) &  &  &  &  &  &  \\ 
+          & & & & & & & \\ 
+        \hline \\[-1.8ex] 
+        Fixed effects? & No & Yes & Yes & Yes & Yes & Yes & Yes \\ 
+        Observations & 7,138 & 7,138 & 7,138 & 7,021 & 7,021 & 7,138 & 7,138 \\ 
+        R$^{2}$ & 0.254 & 0.043 & 0.053 & 0.045 & 0.053 & 0.066 & 0.044 \\ 
+        Adjusted R$^{2}$ & 0.254 & $-$0.204 & $-$0.191 & $-$0.202 & $-$0.192 & $-$0.175 & $-$0.202 \\ 
+        \hline 
+        \hline \\[-1.8ex] 
+        \textit{Note:}  & \multicolumn{7}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+        \end{tabular} 
+    }}
+  \end{table} 
+
+\subsubsection{Cosponsors per bill}
+Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number of cosponsors per bill against each of the prestige variables. More influential legislators should in theory be able to garner more cosponsors for their legislation, and in general, this appears to be the case. One notable exception is that being on more committees results in fewer cosponsors per bill, which may suggest that being on more committees results in ``low-tier'' committee bills diluting the number of cosponsors per bill.
+\begin{table}[!htbp]
+    \noindent
+    \caption{Cosponsors per bill} 
+    \label{tab:cosponsors_per_bill} 
+    \makebox[\textwidth]{\adjustbox{max width= 0.75\paperwidth}{%
+    \begin{tabular}{@{\extracolsep{5pt}}lccccccc} 
+        \\[-1.8ex]\hline 
+        \hline \\[-1.8ex] 
+         & \multicolumn{7}{c}{\textit{Dependent variable:}} \\ 
+        \cline{2-8} 
+        \\[-1.8ex] & \multicolumn{7}{c}{Number of cosponsors per bill sponsored in legislative session} \\ 
+        \\[-1.8ex] & \textit{OLS} & \multicolumn{6}{c}{\textit{panel}} \\ 
+         & \textit{} & \multicolumn{6}{c}{\textit{linear}} \\ 
+        \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7)\\ 
+        \hline \\[-1.8ex] 
+         Chamber (Senate) & $-$12.562$^{***}$ & $-$12.621$^{***}$ & $-$10.804$^{***}$ & $-$13.028$^{***}$ & $-$12.664$^{***}$ & $-$13.342$^{***}$ & $-$12.545$^{***}$ \\ 
+          & (0.442) & (1.230) & (1.349) & (1.195) & (1.192) & (1.245) & (1.230) \\ 
+          & & & & & & & \\ 
+         Experience (\# of sessions) & 0.181$^{***}$ & 1.452$^{*}$ & 1.449$^{*}$ & 1.216 & 1.198 & 1.372 & 1.415 \\ 
+          & (0.039) & (0.723) & (0.722) & (0.706) & (0.706) & (0.722) & (0.723) \\ 
+          & & & & & & & \\ 
+         Committee count &  &  & $-$0.790$^{**}$ &  &  &  &  \\ 
+          &  &  & (0.242) &  &  &  &  \\ 
+          & & & & & & & \\ 
+         Min committee rank &  &  &  & $-$0.237$^{***}$ &  &  &  \\ 
+          &  &  &  & (0.047) &  &  &  \\ 
+          & & & & & & & \\ 
+         Max committee coefficient &  &  &  &  & 1.697$^{***}$ &  &  \\ 
+          &  &  &  &  & (0.296) &  &  \\ 
+          & & & & & & & \\ 
+         Committee rank reciprocals &  &  &  &  &  & 3.276$^{***}$ &  \\ 
+          &  &  &  &  &  & (0.899) &  \\ 
+          & & & & & & & \\ 
+         Leadership &  &  &  &  &  &  & 4.752$^{*}$ \\ 
+          &  &  &  &  &  &  & (1.895) \\ 
+          & & & & & & & \\ 
+         Constant & 16.546$^{***}$ &  &  &  &  &  &  \\ 
+          & (0.255) &  &  &  &  &  &  \\ 
+          & & & & & & & \\ 
+        \hline \\[-1.8ex] 
+        Fixed effects? & No & Yes & Yes & Yes & Yes & Yes & Yes \\ 
+        Observations & 7,061 & 7,061 & 7,061 & 6,963 & 6,963 & 7,061 & 7,061 \\ 
+        R$^{2}$ & 0.103 & 0.020 & 0.022 & 0.026 & 0.027 & 0.022 & 0.021 \\ 
+        Adjusted R$^{2}$ & 0.103 & $-$0.234 & $-$0.232 & $-$0.228 & $-$0.226 & $-$0.231 & $-$0.233 \\ 
+        \hline 
+        \hline \\[-1.8ex] 
+        \textit{Note:}  & \multicolumn{7}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+        \end{tabular} 
+    }}
+  \end{table} 
+
+
+\nocite{stargazer}
+
+\pagebreak
 \printbibliography
 
 \end{document}
