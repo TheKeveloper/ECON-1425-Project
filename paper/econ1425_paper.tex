@@ -8,8 +8,7 @@
 \usepackage{ksty}
 \usepackage{hyperref}
 \usepackage{adjustbox}
-\usepackage[figuresleft
-]{rotating}
+\usepackage[figuresleft]{rotating}
 \title{ECON 1425 Final Paper}
 \author{Kevin Bi}
 \date{April 2020}
@@ -368,6 +367,7 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
     & (0.003) & (0.003) & (0.004) & (0.005) \\ 
     & & & & \\ 
   \hline \\[-1.8ex] 
+  Legislative session fixed effects? & Yes & Yes & Yes & Yes \\ 
   Observations & 84,256 & 84,256 & 84,156 & 84,156 \\ 
   R$^{2}$ & 0.004 & 0.015 & 0.015 & 0.020 \\ 
   Adjusted R$^{2}$ & 0.004 & 0.015 & 0.015 & 0.019 \\ 
@@ -377,7 +377,105 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \end{tabular} 
   \end{table} 
 
+  \subsubsection{Ideological diversity}
+  The legislator level regressions on the number of cosponsors per bill already tell us that prestige has a positive impact on the number of total cosponsors. However, we can also get an idea for how influential committee assignmets and party leadership are by examining their ability to rally legislators of different ideologies.
+  
+  First, I examine how the various prestige measures affects the proportion of cosponsors who are in the same party as the sponsor. These results are shown in Table \ref{tab:party_prop}. Experience seems to correlate with becoming more bipartisan. Party leaders also have a higher proportion of same party cosponsors, indicating that they may have more sway in their own party but less infuence with members of other parties. The committee data all seem to suggest that as an individual gains more prestige, they are better able to bring cosponsors from the opposing party. 
 
+  \begin{table}[!htbp] \centering 
+    \caption{Same party cosponsorship proportion by sponsor traits} 
+    \label{tab:party_prop} 
+  \begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+  \\[-1.8ex]\hline 
+  \hline \\[-1.8ex] 
+   & \multicolumn{5}{c}{\textit{Dependent variable:}} \\ 
+  \cline{2-6} 
+  \\[-1.8ex] & \multicolumn{5}{c}{Same party cosponsorship proportion} \\ 
+  \\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+  \hline \\[-1.8ex] 
+   Chamber (Senate) & $-$0.108$^{***}$ & $-$0.112$^{***}$ & $-$0.089$^{***}$ & $-$0.098$^{***}$ & $-$0.091$^{***}$ \\ 
+    & (0.003) & (0.003) & (0.004) & (0.003) & (0.003) \\ 
+    & & & & & \\ 
+   Experience & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.002$^{***}$ & $-$0.001$^{***}$ & $-$0.001$^{*}$ \\ 
+    & (0.0003) & (0.0003) & (0.0003) & (0.0003) & (0.0003) \\ 
+    & & & & & \\ 
+   Leadership &  & 0.130$^{***}$ &  &  &  \\ 
+    &  & (0.009) &  &  &  \\ 
+    & & & & & \\ 
+   Committee count &  &  & $-$0.009$^{***}$ &  &  \\ 
+    &  &  & (0.001) &  &  \\ 
+    & & & & & \\ 
+   Minimum committee rank &  &  &  & 0.003$^{***}$ &  \\ 
+    &  &  &  & (0.0002) &  \\ 
+    & & & & & \\ 
+   Committee rank reciprocals &  &  &  &  & $-$0.054$^{***}$ \\ 
+    &  &  &  &  & (0.004) \\ 
+    & & & & & \\ 
+   Constant & 0.701$^{***}$ & 0.702$^{***}$ & 0.720$^{***}$ & 0.677$^{***}$ & 0.716$^{***}$ \\ 
+    & (0.005) & (0.005) & (0.006) & (0.006) & (0.005) \\ 
+    & & & & & \\ 
+  \hline \\[-1.8ex] 
+  Legislative session fixed effects? & Yes & Yes & Yes & Yes & Yes \\ 
+  Observations & 84,256 & 84,256 & 84,256 & 83,722 & 84,256 \\ 
+  R$^{2}$ & 0.032 & 0.034 & 0.032 & 0.033 & 0.034 \\ 
+  Adjusted R$^{2}$ & 0.031 & 0.034 & 0.032 & 0.033 & 0.034 \\ 
+  \hline 
+  \hline \\[-1.8ex] 
+  \textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+  \end{tabular} 
+  \end{table} 
+
+  However, party affiliation alone gives us limited granularity in the data. We can also examine the ideological variance of the bill based on the various prestige measures. The results are shown in Table \ref{tab:nominate_variance}, and importantly, four of the regressions control for the proportion of cosponsors in the same party as the sponsor. This helps us gauge if some members, even if they are not as effective in bringing cosponsors from other parties, are at least more effective at courting cosponsors of varying ideologies from within in the same party.
+  
+  For the most part, committee level prestige seems to have the same effect within party and across parties, but notably, party leadership seems to be more effective at increasing ideological diversity of cospnosors only within the party, but not across party lines. The sponsor's experience also does not seem to play a statistically significant role in the diversity of the bill's cosponsors. 
+
+  \begin{sidewaystable}[!htbp] \centering 
+    \caption{Nominate variance by sponsor traits} 
+    \label{tab:nominate_variance} 
+    \makebox[\textwidth]{\adjustbox{max width= 0.75\paperheight}{%
+    \begin{tabular}{@{\extracolsep{5pt}}lccccccccc} 
+        \\[-1.8ex]\hline 
+        \hline \\[-1.8ex] 
+         & \multicolumn{9}{c}{\textit{Dependent variable:}} \\ 
+        \cline{2-10} 
+        \\[-1.8ex] & \multicolumn{9}{c}{Nominate variance} \\ 
+        \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6) & (7) & (8) & (9)\\ 
+        \hline \\[-1.8ex] 
+         Chamber (Senate) & $-$0.019$^{***}$ & $-$0.019$^{***}$ & $-$0.017$^{***}$ & $-$0.023$^{***}$ & $-$0.025$^{***}$ & $-$0.043$^{***}$ & $-$0.036$^{***}$ & $-$0.044$^{***}$ & $-$0.044$^{***}$ \\ 
+          & (0.001) & (0.001) & (0.001) & (0.001) & (0.001) & (0.001) & (0.001) & (0.001) & (0.001) \\ 
+          & & & & & & & & & \\ 
+         Experience & $-$0.0001 & $-$0.0001 & $-$0.0001 & $-$0.0003$^{***}$ & $-$0.0004$^{***}$ & $-$0.0005$^{***}$ & $-$0.001$^{***}$ & $-$0.001$^{***}$ & $-$0.001$^{***}$ \\ 
+          & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) & (0.0001) \\ 
+          & & & & & & & & & \\ 
+         Same party cosponsors proportion &  &  &  &  &  & $-$0.212$^{***}$ & $-$0.212$^{***}$ & $-$0.212$^{***}$ & $-$0.212$^{***}$ \\ 
+          &  &  &  &  &  & (0.001) & (0.001) & (0.001) & (0.001) \\ 
+          & & & & & & & & & \\ 
+         Leadership &  & $-$0.015$^{***}$ &  &  &  & 0.013$^{***}$ &  &  &  \\ 
+          &  & (0.003) &  &  &  & (0.003) &  &  &  \\ 
+          & & & & & & & & & \\ 
+         Committee count &  &  & $-$0.001$^{**}$ &  &  &  & $-$0.003$^{***}$ &  &  \\ 
+          &  &  & (0.0005) &  &  &  & (0.0004) &  &  \\ 
+          & & & & & & & & & \\ 
+         Minimum committee rank &  &  &  & $-$0.001$^{***}$ &  &  &  & $-$0.0004$^{***}$ &  \\ 
+          &  &  &  & (0.0001) &  &  &  & (0.0001) &  \\ 
+          & & & & & & & & & \\ 
+         Committee rank reciprocals &  &  &  &  & 0.018$^{***}$ &  &  &  & 0.006$^{***}$ \\ 
+          &  &  &  &  & (0.001) &  &  &  & (0.001) \\ 
+          & & & & & & & & & \\ 
+         Constant & 0.361$^{***}$ & 0.361$^{***}$ & 0.364$^{***}$ & 0.370$^{***}$ & 0.356$^{***}$ & 0.510$^{***}$ & 0.517$^{***}$ & 0.513$^{***}$ & 0.508$^{***}$ \\ 
+          & (0.002) & (0.002) & (0.002) & (0.002) & (0.002) & (0.002) & (0.002) & (0.002) & (0.002) \\ 
+          & & & & & & & & & \\ 
+        \hline \\[-1.8ex] 
+        Legislative session fixed effects? & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes & Yes \\ 
+        Observations & 84,156 & 84,156 & 84,156 & 83,622 & 84,156 & 84,156 & 84,156 & 83,622 & 84,156 \\ 
+        R$^{2}$ & 0.028 & 0.029 & 0.028 & 0.030 & 0.030 & 0.354 & 0.354 & 0.353 & 0.354 \\ 
+        Adjusted R$^{2}$ & 0.028 & 0.028 & 0.028 & 0.030 & 0.030 & 0.354 & 0.354 & 0.353 & 0.354 \\ 
+        \hline 
+        \hline \\[-1.8ex] 
+        \textit{Note:}  & \multicolumn{9}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+        \end{tabular} 
+    }}
+  \end{sidewaystable} 
 
 \nocite{stargazer}
 

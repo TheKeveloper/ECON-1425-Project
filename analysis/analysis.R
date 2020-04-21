@@ -206,6 +206,87 @@ stargazer(enacted_simple_regs,
                                "Same party cosponsors proportion", "Nominate variance"), 
           order = c(4, 1, 2, 3),
           dep.var.labels = c("Bill enacted"), 
+          add.lines = list(c("Legislative session fixed effects?", "Yes", "Yes", "Yes", "Yes")),
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
+nominate_variance_no_props <- list(
+  experience = reg_result(recent_bills_df, "nominate_variance", "experience",
+                          controls = c(basic_bill_controls), 
+                          fe = F, full = T),
+  leadership = reg_result(recent_bills_df, "nominate_variance", "leadership",
+                          controls = c("experience", basic_bill_controls), 
+                          fe = F, full = T),
+  committee_count = reg_result(recent_bills_df, "nominate_variance", "committee_count",
+                          controls = c("experience", basic_bill_controls), 
+                          fe = F, full = T),
+  min_rank = reg_result(recent_bills_df, "nominate_variance", "committee_min_rank",
+                        controls = c("experience", basic_bill_controls), 
+                        fe = F, full = T),
+  recips = reg_result(recent_bills_df, "nominate_variance", "committee_rank_recips",
+                      controls = c("experience", basic_bill_controls), 
+                      fe = F, full = T)
+)
+
+nominate_variance_props <- list(
+  leadership = reg_result(recent_bills_df, "nominate_variance", "leadership",
+                          controls = c("experience", "same_party_cosponsors_prop", basic_bill_controls), 
+                          fe = F, full = T),
+  committee_count = reg_result(recent_bills_df, "nominate_variance", "committee_count",
+                          controls = c("experience","same_party_cosponsors_prop",  basic_bill_controls), 
+                          fe = F, full = T),
+  min_rank = reg_result(recent_bills_df, "nominate_variance", "committee_min_rank",
+                        controls = c("experience", "same_party_cosponsors_prop", basic_bill_controls), 
+                        fe = F, full = T),
+  recips = reg_result(recent_bills_df, "nominate_variance", "committee_rank_recips",
+                      controls = c("experience", "same_party_cosponsors_prop", basic_bill_controls), 
+                      fe = F, full = T)
+)
+
+same_party_prop_regs <- list(
+  experience = reg_result(recent_bills_df, "same_party_cosponsors_prop", "experience",
+                          controls = c(basic_bill_controls), 
+                          fe = F, full = T),
+  leadership = reg_result(recent_bills_df, "same_party_cosponsors_prop", "leadership",
+                          controls = c("experience", basic_bill_controls), 
+                          fe = F, full = T),
+  committee_count = reg_result(recent_bills_df, "same_party_cosponsors_prop", "committee_count",
+                               controls = c("experience", basic_bill_controls), 
+                               fe = F, full = T),
+  min_rank = reg_result(recent_bills_df, "same_party_cosponsors_prop", "committee_min_rank",
+                        controls = c("experience", basic_bill_controls), 
+                        fe = F, full = T),
+  recips = reg_result(recent_bills_df, "same_party_cosponsors_prop", "committee_rank_recips",
+                      controls = c("experience", basic_bill_controls), 
+                      fe = F, full = T)
+)
+
+stargazer(same_party_prop_regs, 
+          omit = c("congress"),
+          omit.stat = c("f", "ser"), 
+          title = "Same party cosponsorship proportion by sponsor traits",
+          covariate.labels = c("Chamber (Senate)", "Experience", 
+                               "Leadership", "Committee count", 
+                               "Minimum committee rank", "Committee rank reciprocals"), 
+          order = c(6, 5, 6, 1, 2, 3, 4),
+          dep.var.labels = c("Same party cosponsorship proportion"), 
+          add.lines = list(c("Legislative session fixed effects?", "Yes", "Yes", "Yes", "Yes", 
+                               "Yes")),
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
+stargazer(c(nominate_variance_no_props, nominate_variance_props), 
+          omit = c("congress"),
+          omit.stat = c("f", "ser"), 
+          title = "Nominate variance by sponsor traits",
+          float.env = "sidewaystable",
+          covariate.labels = c("Chamber (Senate)", "Experience", "Same party cosponsors proportion", 
+                               "Leadership", "Committee count", 
+                               "Minimum committee rank", "Committee rank reciprocals"), 
+          order = c(7, 5, 6, 1, 2, 3, 4),
+          dep.var.labels = c("Nominate variance"), 
+          add.lines = list(c("Legislative session fixed effects?", "Yes", "Yes", "Yes", "Yes", 
+                             "Yes", "Yes", "Yes", "Yes", "Yes")),
           star.cutoffs = c(0.05, 0.01, 0.001)
 )
 
