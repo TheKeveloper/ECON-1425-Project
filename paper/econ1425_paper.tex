@@ -335,6 +335,49 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \end{tabular} 
   \end{table} 
 
+  \subsection{Bill level analysis}
+  While the previous section analyzed behaviors at a per-session individual level, we can also do an analysis at the per-bill level. However, this means that some of the data will need to be aggregated into a per bill form. To do so, I consider the most prestigious cosponsor (according to the various measures defined), or whether there exists a cosponsor with a leadership position. 
+
+  \subsubsection{Bill enactment}
+  At a very basic level, we can examine how the number and composition of cosponsors affects the likelihood that a bill is enacted into law. Unfortunately, the only data that I was able to obtain was whether the bill was eventually enacted, and not more granular data, such as whether the bill was moved out of committee or the eventual vote count of the bill. Nonetheless, the enactment data is instructive. I first conduct a basic analysis of the the probability of a bill being enacted against the number of cosponsors, the proportion of cosponsors in the sponsor's party, and the ideological variance of cosponsors on the bill. The results are shown in Table \ref{tab:enactment_simple}, and largely confirms intuitions. Bills with more cosponsors, greater proportion of cosponsors not from the sponsor's party, and higher ideological variance have a higher likelihood of passing.
+
+  \begin{table}[!htbp] \centering 
+    \caption{Bill enactment probability} 
+    \label{tab:enactment_simple} 
+  \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+  \\[-1.8ex]\hline 
+  \hline \\[-1.8ex] 
+   & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+  \cline{2-5} 
+  \\[-1.8ex] & \multicolumn{4}{c}{Bill enacted} \\ 
+  \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+  \hline \\[-1.8ex] 
+   Chamber (Senate) & $-$0.003 & $-$0.014$^{***}$ & $-$0.003$^{*}$ & $-$0.006$^{***}$ \\ 
+    & (0.002) & (0.002) & (0.002) & (0.002) \\ 
+    & & & & \\ 
+   Total cosponsors & 0.0003$^{***}$ &  &  & 0.0002$^{***}$ \\ 
+    & (0.00002) &  &  & (0.00002) \\ 
+    & & & & \\ 
+   Same party cosponsors proportion &  & $-$0.068$^{***}$ &  & $-$0.046$^{***}$ \\ 
+    &  & (0.002) &  & (0.003) \\ 
+    & & & & \\ 
+   Nominate variance &  &  & 0.187$^{***}$ & 0.108$^{***}$ \\ 
+    &  &  & (0.006) & (0.007) \\ 
+    & & & & \\ 
+   Constant & 0.044$^{***}$ & 0.097$^{***}$ & $-$0.018$^{***}$ & 0.038$^{***}$ \\ 
+    & (0.003) & (0.003) & (0.004) & (0.005) \\ 
+    & & & & \\ 
+  \hline \\[-1.8ex] 
+  Observations & 84,256 & 84,256 & 84,156 & 84,156 \\ 
+  R$^{2}$ & 0.004 & 0.015 & 0.015 & 0.020 \\ 
+  Adjusted R$^{2}$ & 0.004 & 0.015 & 0.015 & 0.019 \\ 
+  \hline 
+  \hline \\[-1.8ex] 
+  \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+  \end{tabular} 
+  \end{table} 
+
+
 
 \nocite{stargazer}
 

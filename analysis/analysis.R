@@ -1,5 +1,6 @@
 library(plm)
-df <- read.csv("data/all_congresses.csv"); df$after_reform <- (df$congress > 103) * 1
+library(stargazer)
+df <- read.csv("data/all_congresses.csv")
 recent_df <- df[df$congress >= 103, ]
 
 filter_nas <- function(v) {
@@ -169,25 +170,59 @@ sum(df2$lobbyist) / length(df2$lobbyist)
 
 bills_df <- read.csv("data/bill_infos.csv")
 
-recent_bills_df <- bills_df[bills_df$congress >= 103, ]
 
-bills_df$after_reform = bills_df$congress
 
-reg_result(recent_bills_df, "same_party_cosponsors_prop", "cosponsor_leadership", 
-           controls = c("max_cosponsor_experience", "enacted", fields$chamber_factor, fields$congress_factor, fields$sponsor_party_factor), fe = F, full = T)
+recent_bills_with_zeros <- bills_df[bills_df$congress >= 103, ]
+recent_bills_df <- recent_bills_with_zeros[recent_bills_with_zeros$total_cosponsors > 0, ]
+
+summary(reg_result(recent_bills_df, "same_party_cosponsors_prop", "cosponsor_leadership", 
+           controls = c("max_cosponsor_experience", "enacted", fields$chamber_factor, fields$congress_factor, 
+                        fields$sponsor_party_factor), fe = F, full = T))
+
+mod <- lm(same_party_cosponsors_prop ~ cosponsor_leadership + enacted + factor(chamber) + factor(congress) + 
+     factor(sponsor_party), data = recent_bills_df)
+
+basic_bill_controls <- c(fields$chamber_factor, fields$congress_factor)
+enacted_simple_regs <- list(
+  total_cosponsors = reg_result(recent_bills_df, fields$enacted, "total_cosponsors",
+                                controls = c(basic_bill_controls), 
+                                fe = F, full = T),
+  same_party_prop = reg_result(recent_bills_df, fields$enacted, "same_party_cosponsors_prop",
+                               controls = c(basic_bill_controls), 
+                               fe = F, full = T),
+  nominate_variance = reg_result(recent_bills_df, fields$enacted, "nominate_variance",
+                                    controls = c(basic_bill_controls), 
+                                    fe = F, full = T),
+  joint =  reg_result(recent_bills_df, fields$enacted, "total_cosponsors",
+                      controls = c("same_party_cosponsors_prop", "nominate_variance", basic_bill_controls), 
+                      fe = F, full = T)
+)
+
+stargazer(enacted_simple_regs,
+          omit = c("congress"),
+          omit.stat = c("f", "ser"), 
+          title = "Bill enactment probability", 
+          covariate.labels = c("Chamber (Senate)", "Total cosponsors", 
+                               "Same party cosponsors proportion", "Nominate variance"), 
+          order = c(4, 1, 2, 3),
+          dep.var.labels = c("Bill enacted"), 
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
 
            
-reg_result(recent_bills_df, fields$enacted, "total_cosponsors", controls = c(fields$chamber_factor, fields$congress_factor)
-              , fe = F, full = T)
+summary(reg_result(recent_bills_df, fields$enacted, "total_cosponsors", 
+           controls = c(fields$chamber_factor, fields$congress_factor, fields$experience, 
+                        fields$leadership)
+              , fe = F, full = T))
 
 reg_result(recent_bills_df, "total_cosponsors", "max_cosponsor_committee_rank_recips",  
            controls = c(fields$chamber_factor, fields$congress_factor, "cosponsor_leadership", "max_cosponsor_experience"),
            fe = F, full = T)
 
-reg_result(recent_bills_df, fields$nominate_variance, fields$leadership, 
+summary(reg_result(recent_bills_df, fields$nominate_variance, fields$leadership, 
            c(fields$chamber_factor, fields$congress_factor, fields$experience, "same_party_cosponsors_prop", 
              "max_cosponsor_experience", "total_cosponsors"),
-           fe = F, full = T)
+           fe = F, full = T))
 
 reg_result(recent_bills_df, "same_party_cosponsors_prop", fields$leadership,
            c(fields$chamber_factor, fields$congress_factor, fields$experience,
@@ -198,8 +233,9 @@ recent_senate_bills_df = recent_bills_df[recent_bills_df$chamber == "senate", ]
 recent_house_bills_df = recent_bills_df[recent_bills_df$chamber == "house", ]
 
 outliers <- function(data, threshold = 1.5) {
-  lowerq = quantile(data)[2]
-  upperq = quantile(data)[4]
+  lowerq = quantile(data)[[2]]
+  upperq = quantile(data)[[4]]
   iqr = IQR(data)
-  return(data[data > upperq + threshold * iqr || data < lowerq - threshold * iqr])
+  print(upperq + threshold * iqr)
+  return(data[data > upperq + threshold * iqr | data < lowerq - threshold * iqr])
 }
