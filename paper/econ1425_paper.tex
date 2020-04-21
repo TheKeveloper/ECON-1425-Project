@@ -477,6 +477,52 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
     }}
   \end{sidewaystable} 
 
+
+  \subsection{Lobbying} 
+  In this section, I examine the probability that a given legislator becomes a lobbyist after they leave congress. Throughout, I control for party and retirement session fixed effects by regressing on indicators of both the party and the last congressioanl session where the legislator was active. All measures of prestige and participation (leadership, committee assignments) are taken for the last session in which the legislator was in congress.
+
+  \subsubsection{Basic insights}
+  I first examine some fairly straightforward insights into who becomes a lobbyist, such as the party of the individual, such as their party, chamber, experience, and time since the legislator's last session. Note that the number of sessions since leaving politics is calculated as 116 (the current session) minus their last active congressional session. I also obviously omit last session fixed effects when examining the effect of time since leaving congress. 
+
+  The results of the regression are shown in Table \ref{tab:lobbyist_basic}. The only consistently statistically significant covariates are Experience and the number of sessions since leaving. However, the number of sessions since leaving is a bit misleading, because the dataset marks a former legislator as a lobbyist if they have ever been a lobbyist post-politics. More years since leaving politics means a wider window to have been in lobbying at some point. Nonetheless, this suggests that the final legislative session is necessary to control for in the subsequent regressions. 
+  
+  \begin{table}[!htbp] \centering 
+    \caption{Probability of becoming a lobbyist} 
+    \label{tab:lobbyist_basic} 
+  \begin{tabular}{@{\extracolsep{5pt}}lcccccc} 
+  \\[-1.8ex]\hline 
+  \hline \\[-1.8ex] 
+   & \multicolumn{6}{c}{\textit{Dependent variable:}} \\ 
+  \cline{2-7} 
+  \\[-1.8ex] & \multicolumn{6}{c}{Became lobbyist} \\ 
+  \\[-1.8ex] & (1) & (2) & (3) & (4) & (5) & (6)\\ 
+  \hline \\[-1.8ex] 
+    Chamber (Senate) & $-$0.075 & $-$0.098$^{*}$ & $-$0.057 & $-$0.074 & $-$0.094$^{*}$ & $-$0.099 \\ 
+    & (0.051) & (0.047) & (0.048) & (0.047) & (0.047) & (0.052) \\ 
+    & & & & & & \\ 
+   Experience &  & 0.019$^{***}$ &  &  & 0.022$^{***}$ & 0.012$^{*}$ \\ 
+    &  & (0.005) &  &  & (0.005) & (0.005) \\ 
+    & & & & & & \\ 
+    Sessions since leaving &  &  & 0.032$^{***}$ &  & 0.036$^{***}$ &  \\ 
+    &  &  & (0.004) &  & (0.004) &  \\ 
+    & & & & & & \\ 
+   Multiple parties &  &  &  & 0.034 & 0.079 & 0.132 \\ 
+    &  &  &  & (0.110) & (0.109) & (0.119) \\ 
+    & & & & & & \\ 
+   Republican &  &  &  & 0.034 & 0.052 & 0.054 \\ 
+    &  &  &  & (0.040) & (0.037) & (0.040) \\ 
+    & & & & & & \\ 
+  \hline \\[-1.8ex] 
+  Last session fixed effects? & Yes & Yes & No & Yes & No & Yes \\ 
+  Observations & 473 & 471 & 471 & 471 & 471 & 472 \\ 
+  R$^{2}$ & 0.004 & 0.258 & 0.140 & 0.230 & 0.186 & 0.022 \\ 
+  Adjusted R$^{2}$ & 0.002 & 0.218 & 0.136 & 0.187 & 0.177 & 0.014 \\ 
+  \hline 
+  \hline \\[-1.8ex] 
+  \textit{Note:}  & \multicolumn{6}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+  \end{tabular} 
+  \end{table} 
+
 \nocite{stargazer}
 
 \pagebreak

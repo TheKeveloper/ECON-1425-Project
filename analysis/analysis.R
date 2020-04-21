@@ -156,18 +156,6 @@ stargazer(reciprocal_reg,
           star.cutoffs = c(0.05, 0.01, 0.001)
 )
 
-df2 <- read.csv("data/former_legs.csv")
-
-summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))
-
-summary(lm(lobbyist ~ remaining_friends + experience + factor(last_congress) + factor(chamber) + factor(party), data = df2))
-
-summary(lm(lobbyist ~ factor(party) + factor(last_congress) + factor(chamber), data = df2))
-
-df2$chamber_indicator <- (df2$chamber == "senate") * 1
-
-sum(df2$lobbyist) / length(df2$lobbyist)
-
 bills_df <- read.csv("data/bill_infos.csv")
 
 
@@ -320,3 +308,46 @@ outliers <- function(data, threshold = 1.5) {
   print(upperq + threshold * iqr)
   return(data[data > upperq + threshold * iqr | data < lowerq - threshold * iqr])
 }
+
+df2 <- read.csv("data/former_legs.csv"); df2$time_since <- 116 - df2$last_congress; df2$senate_indicator = df2$chamber == "senate"
+
+basic_controls = c("factor(last_congress)", "senate_indicator")
+
+lobbying_basic_regs <- list(
+  chamber = reg_result(df2, "lobbyist", "senate_indicator", fe = F),
+  experience = reg_result(df2, "lobbyist", fields$experience, controls = c(basic_controls), fe = F),
+  time_since = reg_result(df2, "lobbyist", "time_since", controls = c("senate_indicator"), fe = F),
+  party = reg_result(df2, "lobbyist", "party", controls = c(basic_controls), fe = F),
+  joint = reg_result(df2, "lobbyist", "experience", 
+                     controls = c("senate_indicator", "party", "time_since"), fe = F),
+  joint_fe = reg_result(df2, reg_result(df2, "lobbyist", "experience", 
+                                        controls = c("senate_indicator", "party", fields$chamber_factor), fe = F),)
+)
+
+
+stargazer(lobbying_basic_regs, 
+          omit = c("congress", "Constant"),
+          omit.stat = c("f", "ser"), 
+          title = "Probability of becoming a lobbyist",
+          # float.env = "sidewaystable",
+          covariate.labels = c("Experience", "Multiple parties", "Republican", 
+                                "Sessions since leaving", "Chamber (Senate)"), 
+          dep.var.labels = c("Became lobbyist"), 
+          add.lines = list(c("Last session fixed effects?", "Yes", "Yes", "No", "Yes", "No")),
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
+summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))
+
+summary(lm(lobbyist ~ cur_relations_score + experience + time_since + factor(chamber) + factor(party), data = df2))
+
+summary(lm(lobbyist ~ factor(party) + factor(last_congress) + factor(chamber), data = df2))
+
+summary(lm(lobbyist ~ leadership + experience + factor(last_congress) + factor(chamber) + factor(party), 
+           data = df2))
+
+
+df2$chamber_indicator <- (df2$chamber == "senate") * 1
+
+sum(df2$lobbyist) / length(df2$lobbyist)
+
