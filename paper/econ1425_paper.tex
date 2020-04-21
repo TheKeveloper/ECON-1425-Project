@@ -284,6 +284,57 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
     }}
   \end{table} 
 
+  \subsubsection{Reciprocal Cosponsorship}
+  I perform a somewhat crude statistical test of whether or not there is reciprocal cosponsorship, that is, those who cospnosor other legislation get more cosponsorships themselves. To do so, I simply regress the number of cosponsors per bill for a given legislator against the number of bills that legislator cosponsored themselves. The results of that regression are shown in Table \ref{tab:reciprocal}. Indeed, I find a weak, but statistically significant, positive relationship between the number of cosponsors per bill and the number of bills cosponsored.
+  \begin{table}[!htbp] \centering 
+    \caption{Reciprocal cosponsorship} 
+    \label{tab:reciprocal} 
+  \begin{tabular}{@{\extracolsep{5pt}}lcc} 
+  \\[-1.8ex]\hline 
+  \hline \\[-1.8ex] 
+   & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
+  \cline{2-3} 
+  \\[-1.8ex] & \multicolumn{2}{c}{Cosponsors per bill} \\ 
+  \\[-1.8ex] & (1) & (2)\\ 
+  \hline \\[-1.8ex] 
+   Chamber (Senate) & $-$10.807$^{***}$ & $-$9.648$^{***}$ \\ 
+    & (1.254) & (1.351) \\ 
+    & & \\ 
+   Bills cosponsored & 0.013$^{***}$ & 0.014$^{***}$ \\ 
+    & (0.003) & (0.003) \\ 
+    & & \\ 
+   Bills sponsored & $-$0.109$^{***}$ & $-$0.113$^{***}$ \\ 
+    & (0.017) & (0.017) \\ 
+    & & \\ 
+   Experience &  & 1.238 \\ 
+    &  & (0.702) \\ 
+    & & \\ 
+   Leadership &  & $-$0.617 \\ 
+    &  & (2.245) \\ 
+    & & \\ 
+   Committee count &  & $-$0.314 \\ 
+    &  & (0.308) \\ 
+    & & \\ 
+   Committee rank reciprocals &  & $-$0.736 \\ 
+    &  & (2.770) \\ 
+    & & \\ 
+   Min committee rank &  & 0.017 \\ 
+    &  & (0.097) \\ 
+    & & \\ 
+   Max committee coefficient &  & 2.093 \\ 
+    &  & (1.212) \\ 
+    & & \\ 
+  \hline \\[-1.8ex] 
+  Fixed effects? & Yes & Yes \\ 
+  Observations & 7,061 & 6,963 \\ 
+  R$^{2}$ & 0.028 & 0.038 \\ 
+  Adjusted R$^{2}$ & $-$0.223 & $-$0.213 \\ 
+  \hline 
+  \hline \\[-1.8ex] 
+  \textit{Note:}  & \multicolumn{2}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+  \end{tabular} 
+  \end{table} 
+
 
 \nocite{stargazer}
 

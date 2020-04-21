@@ -130,9 +130,31 @@ stargazer(experience_regs$cosponsors_per_bill,
           covariate.labels = c("Chamber (Senate)", "Experience (# of sessions)", "Committee count", 
                                "Min committee rank", "Max committee coefficient", "Committee rank reciprocals", 
                                "Leadership"),
-          dep.var.labels = c("Number of cosponsors per bill sponsored"), 
+          dep.var.labels = c("Number of cosponsors per bill sponsored in legislative session"), 
           star.cutoffs = c(0.05, 0.01, 0.001)
           )
+
+
+reciprocal_reg <- reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored, 
+                             controls = c(fields$bills_sponsored, fields$chamber_factor))
+reciprocal_reg_prestige_controls <- reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored, 
+                  controls = c(fields$experience, fields$bills_sponsored, fields$leadership, fields$committee_count,
+                               fields$committee_rank_recips, fields$committee_min_rank, fields$max_coeff, 
+                               fields$chamber_factor))
+
+stargazer(reciprocal_reg,
+          reciprocal_reg_prestige_controls,
+          omit.stat = c("f", "ser"), 
+          title = "Reciprocal cosponsorship", 
+          add.lines = list(c("Fixed effects?", "Yes", "Yes")),
+          order = c(9, 1, 3, 2, 4, 5, 6, 7, 8), 
+          covariate.labels = c("Chamber (Senate)", "Bills cosponsored", "Bills sponsored",
+                               "Experience", "Leadership", "Committee count", "Committee rank reciprocals",
+                               "Min committee rank", "Max committee coefficient"),
+          dep.var.labels = c("Cosponsors per bill"), 
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
 df2 <- read.csv("data/former_legs.csv")
 
 summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))
@@ -171,4 +193,13 @@ reg_result(recent_bills_df, "same_party_cosponsors_prop", fields$leadership,
            c(fields$chamber_factor, fields$congress_factor, fields$experience,
              "max_cosponsor_experience", "total_cosponsors"),
            fe = F, full = T)
-           
+sd(recent_bills_df$total_cosponsors)
+recent_senate_bills_df = recent_bills_df[recent_bills_df$chamber == "senate", ]
+recent_house_bills_df = recent_bills_df[recent_bills_df$chamber == "house", ]
+
+outliers <- function(data, threshold = 1.5) {
+  lowerq = quantile(data)[2]
+  upperq = quantile(data)[4]
+  iqr = IQR(data)
+  return(data[data > upperq + threshold * iqr || data < lowerq - threshold * iqr])
+}
