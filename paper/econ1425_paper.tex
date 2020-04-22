@@ -10,6 +10,9 @@
 \usepackage{hyperref}
 \usepackage{adjustbox}
 \usepackage[figuresleft]{rotating}
+
+\newtheorem{hypothesis}{Hypothesis}
+
 \title{ECON 1425 Final Paper}
 \author{Kevin Bi}
 \date{April 2020}
@@ -43,17 +46,49 @@ Woon (2008) \cite{woon2008} presents a model of bill sponsorship behavior in whi
 \subsection{Post-politics lobbying}
 A relatively common career for legislators who have left politics but want to stay involved in the political arena is to become a political lobbyist. The issue has garnered attention as Congresswoman Alexandria Ocasio Cortez and Senator Ted Cruz, legislators from opposite ends of the political spectrum, announced they would each pursue legislation to ban former members of Congress from becoming lobbyists afterwards \cite{vox_lobbying}. The so called ``revolving door'' of former legislators becoming lobbyists has also received substantially more academic attention in recent years.
 
-Lazarus and McKay (2012) \cite{lazarus_mckay2012} find that universities who employed a former legislator or former congressional found significantly more success lobbying for earmarked funding. Vidal et al. (2012) \cite{vidal2012} found that among former staffers who became lobbyists, those who had more powerful connections tend to be paid more, and that paid declined as the number of legislators in Congress who a staffer worked for decreased. Finally, Lazarus, McKay, and Herbel (2016) \cite{lazarus_mckay_herbel2016} find that legislators with more seniority and in positions of power are more likely to become lobbyists.
+Lazarus and McKay (2012) \cite{lazarus_mckay2012} find that universities who employed a former legislator or former congressional found significantly more success lobbying for earmarked funding. Vidal et al. (2012) \cite{vidal2012} found that among former staffers who became lobbyists, those who had more powerful connections tend to be paid more, and that paid declined as the number of legislators in Congress who a staffer worked for decreased. Lazarus, McKay, and Herbel (2016) \cite{lazarus_mckay_herbel2016} find that legislators with more seniority and in positions of power are more likely to become lobbyists. Finally, Mattozzi and Merlo (2008) \cite{mattozzi_merlo2008} develop a model in which politicians are not career politicians, but that politics is one part of an individual's career choice. Extending this analysis may suggest that actions in the political sphere can be changed to increase earnings in a post-political career.
 
 \section{Theory and Hypotheses}
-\subsection{Legislative Behavior}
 While most of the existing literature treats cosponsorship as a policy signalling mechanism on the part of the cosponsor, I explore its role as a way of building a relationship and currying favor with the bill sponsor. Observe that from the point of the bill sponsor, each additional cosponsor is strictly beneficial for signalling the bill's support to party leadership, to interest groups, or to the public. There is no cost to an additional cosponsor. However, for the cosponsor, the act of cosponsoring carries some political risk in signalling support for a bill that my rouse electoral opposition and that may fail. In particular for the cosponsor, they are attaching their support to a bill they did not write, and therefore cannot optimize the bill to match either their own ideology or the ideology of their electorate in the same way that the bill's sponsor can. 
 
-However, such an analysis would predict that the number of cosponsors a bill receives depends only on its policy content, and that the average number of cosponsors per bill would remain consistent over time, regardless of that legislator's standing. We would also expect that legislators generally cosponsor the same amount of legislation over time, assuming their ideology remains consistent. Koger (2003) \cite{koger2003} presents an argument that more senior members may cosponsor more, because their cospnosorships are more valuable in signalling the viability of a bill. However, while this explains the demand side of bill cosponsorship, it does not explain why a more senior legislator would want to cosponsor more.
+However, such an analysis would predict that the number of cosponsors a bill receives depends only on its policy content, and that the average number of cosponsors per bill would remain consistent over time, regardless of that legislator's standing. We would also expect that legislators generally cosponsor the same amount of legislation over time, assuming their ideology remains consistent. Koger (2003) \cite{koger2003} presents an argument that more senior members may cosponsor more, because their cospnosorships are more valuable in signalling the viability of a bill. However, while this explains the demand side of bill cosponsorship, it does not explain why a more senior legislator would want to cosponsor more. More importantly, it would predict that senior legislators receive the same number of cosponsorships per bill as junior legislators do.
 
+Instead, I propose that cosponsorships are a ``currency'' of sorts for purchasing political favors. These could take the form of reciprocal cosponsorships in the future, or in the hopes of receiving promotion to a higher ranking committee. Since more senior and powerful politicians (party leaders, high ranking committee members) have more influence over party promotions and control over the legislative agenda, this would predict that they receive more cosponsorships. This model would also predict that younger members cosponsor more because they have less starting political capital and can use cosponsorship to build up the political capital. Furthermore, older members in Congress have a shorter time horizon for the cosponsorships to pay future political dividends, and would thus have less incentive to cosponsor. However, one caveat to this model would be that if the cosponsorships of more influential members in Congress is more valuable, then those members would be able to extract more political favors for their cosponsorships. This would then raise the marginal value of a cosponsorship, and could incentivize more influential members to cosponsor more. Moreover, it may be because they cosponsor much legislation that they are able to achieve a high ranking position in the first place. This leads to the following hypotheses:
 
-\reminder
+\begin{hypothesis}
+    \label{hyp:cosponsors_per_bill}
+    Higher prestige members of Congress will receive more cosponsors per bill than lower prestige members.
+\end{hypothesis}
+\begin{hypothesis}
+    \label{hyp:bills_cosponsored_experience}
+    The number of bills cosponsored per member decreases as they gain experience. 
+\end{hypothesis}
+\begin{hypothesis}
+    \label{hyp:reciprocal_cosponsorship}
+    Legislators who cosponsor more bills will also receive more cosponsors per bill.
+\end{hypothesis}
+\begin{hypothesis}
+    \label{hyp:leadership_cosponsors}
+    More influential legislators cosponsor more often.
+\end{hypothesis}
 
+If we further assume that the political risk of cosponsorship increases as a bill becomes more ideologically distant from a given legislator's (or their electorate's) ideology, but that the political benefits of cosponsoring are increasing in the influence of the bill sponsor, then we would expect more influential members of Congress to pull in more ideologically diverse cosponsors.
+
+\begin{hypothesis}
+    \label{hyp:cosponsor_ideology}
+    The cosponsors of more influential legislators will be more ideologically diverse than cosponsors of less influential legislators. 
+\end{hypothesis}
+
+Finally, if cosponsorships are providing a good to another individual, then it may also be useful for building interpersonal relationships in Congress. If we build on previous literature \cite{lazarus_mckay_herbel2016} \cite{vidal2012} which finds that stronger connections in Congress lead to more lobbying, then we would assume those that cosponsor more and have stronger cosponsorship relationships will be more likely to become lobbyists.
+
+\begin{hypothesis}
+    \label{hyp:lobbying_relations}
+    Legislators who have cosponsored more and have stronger ``cosponsorship relations'' will be more likely to become lobbyists.
+\end{hypothesis}
+\begin{hypothesis}
+    \label{hyp:lobbying_prestige}
+    Legislators who have more influence in Congress will be more likely to become lobbyists. 
+\end{hypothesis}
 
 \section{Data and Variables}
 \subsection{Data} 
