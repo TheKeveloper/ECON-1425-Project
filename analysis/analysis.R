@@ -320,8 +320,9 @@ lobbying_basic_regs <- list(
   party = reg_result(df2, "lobbyist", "party", controls = c(basic_controls), fe = F),
   joint = reg_result(df2, "lobbyist", "experience", 
                      controls = c("senate_indicator", "party", "time_since"), fe = F),
-  joint_fe = reg_result(df2, reg_result(df2, "lobbyist", "experience", 
-                                        controls = c("senate_indicator", "party", fields$chamber_factor), fe = F),)
+  joint_fe = reg_result(df2, "lobbyist", "experience", 
+                              controls = c("senate_indicator", "party", "senate_indicator"), 
+                              fe = F)
 )
 
 
@@ -333,15 +334,64 @@ stargazer(lobbying_basic_regs,
           covariate.labels = c("Experience", "Multiple parties", "Republican", 
                                 "Sessions since leaving", "Chamber (Senate)"), 
           dep.var.labels = c("Became lobbyist"), 
-          add.lines = list(c("Last session fixed effects?", "Yes", "Yes", "No", "Yes", "No")),
+          add.lines = list(c("Last session fixed effects?", "Yes", "Yes", "No", "Yes", "No", "Yes")),
           star.cutoffs = c(0.05, 0.01, 0.001)
 )
 
+relation_controls <- c("factor(last_congress)", "factor(party)", "experience", "factor(chamber)")
+lobbying_relation_regs <- list(
+  cur_relations <- reg_result(df2, "lobbyist", "cur_relations_score", controls = c(relation_controls), fe = F),
+  remaining_friends <-reg_result(df2, "lobbyist", "remaining_friends", controls = c(relation_controls), fe = F),
+  last_cosponsored <- reg_result(df2, "lobbyist", "last_cosponsored", controls = c(relation_controls), fe = F),
+  last_cosponsors_per_bil <- reg_result(df2, "lobbyist", "last_cosponsors_per_bill", controls = c(relation_controls), fe = F),
+)
+
+
+stargazer(lobbying_relation_regs, 
+          omit = c("factor", "Constant", "party", "indicator", "experience"),
+          omit.stat = c("f", "ser"), 
+          title = "Post-politics lobbying and legisative relationships",
+          # float.env = "sidewaystable",
+          covariate.labels = c("Current relations score", "Remaining friends", 
+                               "Bills cosponsored in last session", "Cosponsors per bill in last session"), 
+          dep.var.labels = c("Became lobbyist"), 
+          # add.lines = list(c("Last session fixed effects?", "Yes", "Yes", "No", "Yes", "No", "Yes")),
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
+lobbying_prestige_regs <- list(
+  leadership = reg_result(df2, "lobbyist", "last_leadership", 
+                          controls = c(relation_controls),
+                           fe = F),
+  committee_count = reg_result(df2, "lobbyist", "last_committee_count", controls = c(relation_controls),
+                               fe = F),
+  committee_min_rank = reg_result(df2, "lobbyist", "last_min_committee_rank", controls = c(relation_controls),
+                                  fe = F),
+  committee_max_coeff = reg_result(df2, "lobbyist", "last_max_coeff", controls = c(relation_controls),
+                                   fe = F),
+  committee_rank_recips = reg_result(df2, "lobbyist", "last_committee_rank_recips", 
+                                     controls = c(relation_controls),
+                                     fe = F)
+)
+
+stargazer(lobbying_prestige_regs, 
+          omit = c("factor", "Constant", "party", "indicator", "experience"),
+          omit.stat = c("f", "ser"), 
+          title = "Post-politics lobbying and political prestige",
+          # float.env = "sidewaystable",
+          covariate.labels = c("Last session leadership", "Last session committee count",
+                               "Last session committee rank recips", "Last session min committee rank",
+                               "Last session max committeee coefficient"), 
+          dep.var.labels = c("Became lobbyist"), 
+          # add.lines = list(c("Last session fixed effects?", "Yes", "Yes", "No", "Yes", "No", "Yes")),
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
 summary(lm(lobbyist ~ cur_relations_score + factor(last_congress), data = df2))
 
-summary(lm(lobbyist ~ cur_relations_score + experience + time_since + factor(chamber) + factor(party), data = df2))
+summary(lm(lobbyist ~ last_committee_count + experience + factor(chamber) + factor(party) 
+           + factor(last_congress), data = df2))
 
-summary(lm(lobbyist ~ factor(party) + factor(last_congress) + factor(chamber), data = df2))
+df2summary(lm(lobbyist ~ factor(party) + factor(last_congress) + factor(chamber), data = df2))
 
 summary(lm(lobbyist ~ leadership + experience + factor(last_congress) + factor(chamber) + factor(party), 
            data = df2))

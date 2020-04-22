@@ -5,6 +5,7 @@
 \onehalfspacing
 \usepackage[margin=1.5in]{geometry}
 
+\setlength{\parskip}{1em}
 \usepackage{ksty}
 \usepackage{hyperref}
 \usepackage{adjustbox}
@@ -32,10 +33,21 @@ In order to study this, I examine open source data on bill cosponsorships and sp
 
 
 \section{Related Literature}
-The literature on bill cosponsorship is relatively sparse, but there is some literature that is related to my goals in this paper and provide useful insights. \reminder
+\subsection{Bill Cosponsorship}
+While bill cosponsorship is an official legislative act in Congress, it does not hold any legislative power. There is no (formal) requirement that a bill receive a certain number of cosponsors in order to advance to a vote nor does the number of cosponsors legally affect the passage of a bill. The question then arises of why legislators would cosponsor at all, and why cosponsorships would be desirable. Koger 2003 \cite{koger2003} argues that the number of cosponsors a bill has is a clear and public signal to party leadership as to the degree and diversity of support that a bill has. Since legislators do not want to advance bills to a vote that will clearly fail, cosponsorship serves as a valuable signal to determine whether a bill should advance in the legislative process. Bill sponsors would therefore pursue more cosponsors in order to increase the chances of their bill reaching the floor and being passed.
+
+While this is a plausible explanation for why a legislator would want cosponsors, what incentive would the same legislator have to cosponsor another legislator's bill. A simple straightforward explanation might be that the legislator has policy preferences, and they may want to help the bill advance if it agrees with their policy preferences. Another approach holds that bill cosponsorship may be a valuable signal to an external audience. Koger \cite{koger2003} points out that cosponsorship can be particularly useful to signal a position on a bill that does not reach a floor vote, and that legislators in the minority party tend to cosponsor more legislations. However, Kessler and Krehbiel (1996) \cite{kessler_krehbiel1996}, in an analysis of the 103rd Congress, finds that legislators in more electoral danger do not cosponsor more legislation, suggesting that any signalling value of cospnosorship is aimed primarily not at the electorate at large, but rather to insiders, including interest groups, lobbyists, or other legislators. 
 
 
-\section{Data and Methodology}
+
+
+
+\reminder
+
+\section{Theory and Hypotheses}
+
+
+\section{Data and Variables}
 \subsection{Data} 
 The data we used is obtained through a variety of sources. I connect the data for legislators using bioguide ids, which are unique identifiers assigned to all U.S. legislators. In some cases, the original data source did not have Bioguide-IDs for the legislator in question, in which case the data was linked using other identification methods, such as the older Thomas ID, matching the names automatically, and manual matching for cases where programmatic methods did not work. 
 
@@ -64,7 +76,7 @@ Data on the ideology of legislators is based on Nominate scores, which assign id
 \subsubsection{Lobbying}
 Data about the post-politics lobbying careers of legislators was scraped from the Center of Responsive Politics ``Revolving Door'' website \cite{revolving-door}. I wrote a web-scraper to scrape the names of the former legislators, as well as whether the website indicated they had become a lobbyist after their political career. Unfortunately, this means that the data only offers a binary indicator of whether they ever became a lobbyist after politics. More granular data was possible and available in image format on their website, but not easily scrapable. I emailed the lobbying researcher at the Center for Responsive Politics to try and obtain machine-readable granular data on post-politics career paths, but did not receive a response. 
 
-\subsection{Methodology}
+\subsection{Variables}
 For many of the variables of analysis, they required some sort of aggregation in order to perform regression analysis. The construction of those measures is detailed here. 
 
 \subsubsection{Cosponsor Ideology}
@@ -92,7 +104,7 @@ With these criteria in mind, I construct the following measure of consponsorship
 \end{align*}
 We can verify the above properties:
 \begin{description}
-    \item[Mutual cosponsorship] Observe that $\partials{s}{f(a, b)} = \frac{1}{2} \frac{\sqrt{f(b, a)}}{\sqrt{f(a, b) N}}$. This is increasing in the ratio $\frac{f(b, a)}{f(a, b)}$, so the marginal benefit of an additional cosponsorship from $a$ to $b$ is greater if $b$ has cospnosored many of $a$'s bills, which is precisely the property we wanted. Observe further that for some fixed number of total cosponsorships between two legislators, the relationship score is maximized when they have equal cosponsors between them. 
+    \item[Mutual cosponsorship] Observe that $\partials{s}{f(a, b)} = \frac{1}{2} \frac{\sqrt{f(b, a)}}{\sqrt{f(a, b) N}}$. This is increasing in the ratio $\frac{f(b, a)}{f(a, b)}$, so the marginal benefit of an additional cosponsorship from $a$ to $b$ is greater if $b$ has cospnosored many of $a$'s bills, which is precisely the property we wanted. Observe further that for some fixed number of total cosponsorships between two legislators, the relationship score is maximized when they have equal cosponsorships in each direction. 
     \item[Weak dependence on shared time] Let $\bar{f}(a, b) = \frac{f(a, b)}{N(a, b)}$. We can rewrite the relationship score as
     \begin{align*}
         s(a, b) = \sqrt{N(a, b) \bar{f}(a, b) \bar{f}(b, a)}
@@ -121,7 +133,7 @@ The first type of behavior I considered was how an individual's sponsorship and 
 For each, I include the result of a pure OLS regression against experience for reference, but I do not believe this to be an accurate gauge. Individual fixed effects must be controlled for because legislators that have managed to stay in office may exhibit particular types of legislative behavior. Furthermore, session (time) fixed effects must also be controlled for as legislative activity in general has increased over time, and time is colinear with experience. 
 
 \subsubsection{Bills cosponsored}
-Table \ref{tab:bills_cosponsored} displays the results of regressions of number of bills cospnsored by each legislator in a given session against their various measures of prestige during that session. Note that while the Min committee rank coefficient is negative, this should be interpreted as more prestigious committees result in more bill cosponsorship, as larger numerical rank corresponds to a less prestigious committee. In general, these results suggest that as a legislator's prestige increases in terms of committees, they cosponsor more, but that party leadership tends to cosponsor less. s
+The first area of analysis I consider is the number of bills cosposnored by each legislator. On average, senators cosponsored 141.9 bills per session, while House representatives cosponsored 190.9 bills per session. Table \ref{tab:bills_cosponsored} displays the results of regressions of number of bills cospnsored by each legislator in a given session against various measures of prestige during that session. Note that while the Min committee rank coefficient is negative, this should be interpreted as more prestigious committees result in more bill cosponsorship, as larger numerical rank corresponds to a less prestigious committee. In general, these results suggest that as a legislator's prestige increases in terms of committees, they cosponsor more, but that party leadership tends to cosponsor less. 
 
 % Table created by stargazer v.5.2.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
 % Date and time: Mon, Apr 20, 2020 - 16:04:34
@@ -284,7 +296,7 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \end{table} 
 
   \subsubsection{Reciprocal Cosponsorship}
-  I perform a somewhat crude statistical test of whether or not there is reciprocal cosponsorship, that is, those who cospnosor other legislation get more cosponsorships themselves. To do so, I simply regress the number of cosponsors per bill for a given legislator against the number of bills that legislator cosponsored themselves. The results of that regression are shown in Table \ref{tab:reciprocal}. Indeed, I find a weak, but statistically significant, positive relationship between the number of cosponsors per bill and the number of bills cosponsored.
+  I perform a somewhat crude statistical test of whether or not there is reciprocal cosponsorship, that is, those who cospnosor other legislation get more cosponsorships themselves. To do so, I simply regress the number of cosponsors per bill for a given legislator against the number of bills that legislator cosponsored themselves. I control for the number of bills sponsored as a way of controlling for how active a legislator is generally. The results of that regression are shown in Table \ref{tab:reciprocal}. Indeed, I find a weak, but statistically significant, positive relationship between the number of cosponsors per bill and the number of bills cosponsored.
   \begin{table}[!htbp] \centering 
     \caption{Reciprocal cosponsorship} 
     \label{tab:reciprocal} 
@@ -385,6 +397,7 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \begin{table}[!htbp] \centering 
     \caption{Same party cosponsorship proportion by sponsor traits} 
     \label{tab:party_prop} 
+    \makebox[\textwidth]{\adjustbox{max width= 0.75\paperwidth}{%
   \begin{tabular}{@{\extracolsep{5pt}}lccccc} 
   \\[-1.8ex]\hline 
   \hline \\[-1.8ex] 
@@ -423,6 +436,7 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \hline \\[-1.8ex] 
   \textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
   \end{tabular} 
+    }}
   \end{table} 
 
   However, party affiliation alone gives us limited granularity in the data. We can also examine the ideological variance of the bill based on the various prestige measures. The results are shown in Table \ref{tab:nominate_variance}, and importantly, four of the regressions control for the proportion of cosponsors in the same party as the sponsor. This helps us gauge if some members, even if they are not as effective in bringing cosponsors from other parties, are at least more effective at courting cosponsors of varying ideologies from within in the same party.
@@ -484,7 +498,7 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \subsubsection{Basic insights}
   I first examine some fairly straightforward insights into who becomes a lobbyist, such as the party of the individual, such as their party, chamber, experience, and time since the legislator's last session. Note that the number of sessions since leaving politics is calculated as 116 (the current session) minus their last active congressional session. I also obviously omit last session fixed effects when examining the effect of time since leaving congress. 
 
-  The results of the regression are shown in Table \ref{tab:lobbyist_basic}. The only consistently statistically significant covariates are Experience and the number of sessions since leaving. However, the number of sessions since leaving is a bit misleading, because the dataset marks a former legislator as a lobbyist if they have ever been a lobbyist post-politics. More years since leaving politics means a wider window to have been in lobbying at some point. Nonetheless, this suggests that the final legislative session is necessary to control for in the subsequent regressions. 
+  The results of the regression are shown in Table \ref{tab:lobbyist_basic}. The only consistently statistically significant covariates are Experience and the number of sessions since leaving. However, the number of sessions since leaving is a bit misleading, because the dataset marks a former legislator as a lobbyist if they have ever been a lobbyist post-politics. More years since leaving politics means a wider window to have been in lobbying at some point. Nonetheless, this suggests that the final legislative session is necessary to control for in the subsequent regressions.
   
   \begin{table}[!htbp] \centering 
     \caption{Probability of becoming a lobbyist} 
@@ -523,8 +537,86 @@ Table \ref{tab:cosponsors_per_bill} shows the results of regressing the number o
   \end{tabular} 
   \end{table} 
 
+  \subsubsection{Lobbying and cosponsorship relations}
+  I now examine how a legislator's relations in congress affect their probability of becoming a lobbyist after leaving Congress. To do so, I use the relationship measure defined from before and I sum up the total relations score for each former legislator. Crucially though, I only sum individuals that are still active in the 116th Congress, because these are people who would be lobbied. I also classify any legislator with whom a given legislator has non-zero cosponsor relations score as a ``friend'', and regress on the number of remaining friends in Congress. Throughout, I control for the last active session of each former legislator, their chamber, political party, and experience. Since these covariates function as controls, I omit them from the regression table. The results are shown in \ref{tab:lobbying_relations}. The results largely conform with expectations, that as a legislator's current legislative relationships improve, they are more likely to become a lobbyist after leaving congress. 
+
+
+  \begin{table}[!htbp] \centering 
+    \caption{Post-politics lobbying and legisative relationships} 
+    \label{tab:lobbying_relations} 
+    \begin{tabular}{@{\extracolsep{5pt}}lcccc} 
+        \\[-1.8ex]\hline 
+        \hline \\[-1.8ex] 
+         & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
+        \cline{2-5} 
+        \\[-1.8ex] & \multicolumn{4}{c}{Became lobbyist} \\ 
+        \\[-1.8ex] & (1) & (2) & (3) & (4)\\ 
+        \hline \\[-1.8ex] 
+         Current relations score & 0.001$^{*}$ &  &  &  \\ 
+          & (0.0003) &  &  &  \\ 
+          & & & & \\ 
+         Remaining friends &  & 0.002$^{*}$ &  &  \\ 
+          &  & (0.001) &  &  \\ 
+          & & & & \\ 
+         Bills cosponsored in last session &  &  & 0.0004$^{*}$ &  \\ 
+          &  &  & (0.0002) &  \\ 
+          & & & & \\ 
+         Cosponsors per bill in last session &  &  &  & 0.001 \\ 
+          &  &  &  & (0.001) \\ 
+          & & & & \\ 
+        \hline \\[-1.8ex] 
+        Observations & 471 & 471 & 471 & 464 \\ 
+        R$^{2}$ & 0.267 & 0.270 & 0.268 & 0.262 \\ 
+        Adjusted R$^{2}$ & 0.223 & 0.225 & 0.223 & 0.216 \\ 
+        \hline 
+        \hline \\[-1.8ex] 
+        \textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+        \end{tabular} 
+  \end{table} 
 \nocite{stargazer}
 
+\subsubsection{Lobbying and prestige}
+One final relevant area of post-politics lobbying is examining the effect of prestige while in Congress. To this end, I examine the level of prestige in the final legislative session where a former legislator was active. I once again control for party, chamber, experience, and last session effects, but omit the coefficients from display. The results in are shown in \ref{tab:lobbying_prestige}. None of the major measures of prestige proved statistically significant. 
+\begin{table}[!htbp] \centering 
+    \caption{Post-politics lobbying and political prestige} 
+    \label{tab:lobbying_prestige} 
+  \begin{tabular}{@{\extracolsep{5pt}}lccccc} 
+  \\[-1.8ex]\hline 
+  \hline \\[-1.8ex] 
+   & \multicolumn{5}{c}{\textit{Dependent variable:}} \\ 
+  \cline{2-6} 
+  \\[-1.8ex] & \multicolumn{5}{c}{Became lobbyist} \\ 
+  \\[-1.8ex] & (1) & (2) & (3) & (4) & (5)\\ 
+  \hline \\[-1.8ex] 
+   Last session leadership & $-$0.129 &  &  &  &  \\ 
+    & (0.136) &  &  &  &  \\ 
+    & & & & & \\ 
+   Last session committee count &  & $-$0.020 &  &  &  \\ 
+    &  & (0.021) &  &  &  \\ 
+    & & & & & \\ 
+   Last session min committee rank &  &  & $-$0.001 &  &  \\ 
+    &  &  & (0.004) &  &  \\ 
+    & & & & & \\ 
+   Last session max committeee coefficient &  &  &  & 0.004 &  \\ 
+    &  &  &  & (0.023) &  \\ 
+    & & & & & \\ 
+    Last session committee rank recips &  &  &  &  & 0.001 \\ 
+    &  &  &  &  & (0.063) \\ 
+    & & & & & \\ 
+  \hline \\[-1.8ex] 
+  Observations & 471 & 471 & 353 & 353 & 471 \\ 
+  R$^{2}$ & 0.261 & 0.261 & 0.247 & 0.247 & 0.260 \\ 
+  Adjusted R$^{2}$ & 0.216 & 0.216 & 0.209 & 0.209 & 0.215 \\ 
+  \hline 
+  \hline \\[-1.8ex] 
+  \textit{Note:}  & \multicolumn{5}{r}{$^{*}$p$<$0.05; $^{**}$p$<$0.01; $^{***}$p$<$0.001} \\ 
+  \end{tabular} 
+  \end{table}
+
+
+  \section{Discussion}
+  \subsection{Legislative Behavior}
+  \reminder
 \pagebreak
 \printbibliography
 
