@@ -136,6 +136,27 @@ stargazer(experience_regs$cosponsors_per_bill,
           )
 
 
+stargazer(experience_regs$cosponsors_per_bill,  
+          experience_fe_regs$cosponsors_per_bill, 
+          committee_count_regs$cosponsors_per_bill, 
+          committee_min_ranks_regs$cosponsors_per_bill,
+          committee_max_coeff_regs$cosponsors_per_bill,
+          committee_rank_recips_regs$cosponsors_per_bill,
+          leadership_regs$cosponsors_per_bill,
+          omit.stat = c("f", "ser"), 
+          title = "Cosponsors per bill", 
+          add.lines = list(c("Fixed effects?", "No", "Yes", "Yes", "Yes", "Yes", "Yes", "Yes")),
+          order = c(7, 6, 1, 2, 3, 4, 5, 8),
+          covariate.labels = c("Chamber (Senate)", "Experience (# of sessions)", "Committee count", 
+                               "Min committee rank", "Max committee coefficient", "Committee rank reciprocals", 
+                               "Leadership"),
+          dep.var.labels = c("Number of cosponsors per bill sponsored in legislative session"), 
+          star.cutoffs = c(0.05, 0.01, 0.001)
+)
+
+summary(reg_result(df, fields$cosponsors_per_bill, fields$committee_count, 
+           controls = c(fields$chamber_factor, fields$experience, fields$bills_sponsored)))
+
 reciprocal_reg <- reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored, 
                              controls = c(fields$bills_sponsored, fields$chamber_factor))
 reciprocal_reg_prestige_controls <- reg_result(recent_df, fields$cosponsors_per_bill, fields$bills_cosponsored, 
@@ -340,10 +361,14 @@ stargazer(lobbying_basic_regs,
 
 relation_controls <- c("factor(last_congress)", "factor(party)", "experience", "factor(chamber)")
 lobbying_relation_regs <- list(
-  cur_relations <- reg_result(df2, "lobbyist", "cur_relations_score", controls = c(relation_controls), fe = F),
-  remaining_friends <-reg_result(df2, "lobbyist", "remaining_friends", controls = c(relation_controls), fe = F),
-  last_cosponsored <- reg_result(df2, "lobbyist", "last_cosponsored", controls = c(relation_controls), fe = F),
-  last_cosponsors_per_bil <- reg_result(df2, "lobbyist", "last_cosponsors_per_bill", controls = c(relation_controls), fe = F),
+  cur_relations =  reg_result(df2, "lobbyist", "cur_relations_score", 
+                              controls = c(relation_controls), fe = F),
+  remaining_friends = reg_result(df2, "lobbyist", "remaining_friends", controls = c(relation_controls), 
+                                 fe = F, logit = T),
+  last_cosponsored = reg_result(df2, "lobbyist", "last_cosponsored", controls = c(relation_controls), 
+                                 fe = F, logit = T),
+  last_cosponsors_per_bill =  reg_result(df2, "lobbyist", "last_cosponsors_per_bill", controls = c(relation_controls), 
+                                        fe = F, logit = T)
 )
 
 
