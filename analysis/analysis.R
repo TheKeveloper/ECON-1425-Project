@@ -219,6 +219,7 @@ stargazer(enacted_simple_regs,
           star.cutoffs = c(0.05, 0.01, 0.001)
 )
 
+basic_bill_controls <- c(fields$chamber_factor, fields$congress_factor, "total_cosponsors")
 nominate_variance_no_props <- list(
   experience = reg_result(recent_bills_df, "nominate_variance", "experience",
                           controls = c(basic_bill_controls), 
