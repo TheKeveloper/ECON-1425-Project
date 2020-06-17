@@ -1,2 +1,2 @@
 # ECON-1425-Project
-Repo for my ECON 1425 project
+My project for ECON 14254: Political Economy, examining reciprocal legislative behavior in the United States Congress. 
