@@ -101,12 +101,12 @@ For the most part, the relationship building that occurs through cosponsorship o
 
 It is simple to see that this could be generalized to more than 2 agents and see each agent as contributing to some common ``cosponsorship'' pot and to therefore account for reputation effects. I omit this analysis however because it is effectively the same as the analysis above. Furthermore, in the real world each period is not instantaneous, and the number of cosponsorships can be partially observed before taking action within the same period, which would only strengthen the enforceability of cosponsorship. This analysis can be applied to hypothesis \ref{hyp:reciprocal_cosponsorship}, as the game theory suggests that an individual who copsonsors more receives more cosponsorships. 
 
-\subsubsection{cosponsorship over time}
+\subsubsection{Cosponsorship over time}
 In this section I present a model for the dynamics of cosponsorship as a legislator ages. To simplify this model, I take the returns to cosponsorship as given rather than applying the game theoretic model from above. Assume that in each period, the direct returns to cosponsorship are given by $u(c) = c - c^2$, with $c$ being scaled appropriately. It would make more sense to impose concave benefits and linear costs, but making the benefits linear and the costs convex achieves the same effect and simplies the calculations considerably.
 
 The key to this model is that I assume the value of a cosponsorship carries forward in some relationship building sense. That is, a cosponsorship in period 1 yields not only benefits in period 1, but in every subsequent period. We model this as a geometrically decaying effect with parameter $\alpha \in [0, 1]$. That is, suppose an agent cosponsors $c$ bills in period 1, then in period 2, this yields additional utility of $\alpha c$, and in general yields benefits $\alpha^k c$ $k$ periods after. This models the fact that in each period, a legislator's cosponsorship builds relationships that are valuable not only in the current period, but in future periods. 
 
-Crucially, assume agents have \emph{finite} time horizons of $n + 1$ peirods with discount factor $\delta \in [0, 1]$. I index the time periods starting at 0 to simplify notation. The utility of an agent is therefore given by
+Assume agents have infinite time horizons with discount factor $\delta \in (0, 1)$. I index the time periods starting at 0 to simplify notation. The utility of an agent is therefore given by
 \begin{align*}
   U(\vec{c}) &= \sum_{k = 0}^\infty \delta^k\left(c_k - c_k^2 + \sum_{j = 0}^{k - 1} \alpha^{k - j} c_j\right) \\
   &= \sum_{k = 0}^\infty\left[\left(\sum_{j = k + 1}^\infty \alpha^j \delta^j c_k\right) + \delta^k c_k - \delta^k c_k^2\right]
@@ -121,13 +121,13 @@ To examine the effect over time, we consider the difference between each year an
   &= \sum_{j = 1}^\infty (\alpha^{k + j} - \alpha^{k + j + 1})\delta^j \\
   &> 0
 \end{align*}
-Because $\alpha < 1$, so $\alpha^{k + j} > \alpha^{k + j - 1}$. So, over time, legislators will decrease the number of bills they cosponsor as else equal, which corresponds with hypothesis \ref{hyp:bills_cosponsored_experience}. Note that we could modify this model to support hypothesis \ref{hyp:lobbying_relations} by treating the infinite time horizon as benefits from lobbying after retirement, or by using a fixed time model (which yields essentially the same results) and adding a sum of all relationships at the end. This analysis is largely uninteresting and so is omitted. 
+Because $\alpha < 1$, $\alpha^{k + j} > \alpha^{k + j + 1}$. So, over time, legislators will decrease the number of bills they cosponsor all else equal, which corresponds with hypothesis \ref{hyp:bills_cosponsored_experience}. Note that we could modify this model to support hypothesis \ref{hyp:lobbying_relations} by treating the infinite time horizon as benefits from lobbying after retirement, or by using a fixed time model (which yields essentially the same results) and adding a sum of all relationships at the end. This analysis is largely uninteresting and so is omitted. 
 
-It is easy to modify this model to account for prestige effects by adding some coefficient on some periods where the prestige is higher, in which case cosponsorship may increase. However, I omit this analysis in favor of the following analysis prestige effects. 
+It is easy to modify this model to account for prestige effects by adding some coefficient on some periods where the prestige is higher, in which case cosponsorship may increase. However, I omit this analysis in favor of the following analysis prestige of effects. 
 
 \subsubsection{Prestige}
 \label{model:prestige}
-To examine prestige, we take a single period view and consider legislators who value political capital in some form, of which cosponsorships is one component. Let $\lambda \geq 1$ be a coefficient on the ``prestige'' of a legislator. Let $K(\lambda)$ be the marginal benefit of a cosponsor with prestige $\lambda$ in terms of political capital. Assuming the ``cosponsorships market``' is competitive, we can treat $K(\lambda)$ as the ``price'' of a cosponsorship from an individual with prestige $\lambda$, with $\frac{dK}{d\lambda} > 0$, $\frac{dK}{d\lambda} < 0$. That is, the marginal benefit of consponsorship with respect to prestige is decreasing. We can treat legislators as choosing an amount of cosponsorships $c$ to produce, and that they have the following utility function,
+To examine prestige, we take a single period view and consider legislators who value political capital in some form, of which cosponsorships is one component. Let $\lambda \geq 1$ be a coefficient on the ``prestige'' of a legislator. Let $K(\lambda)$ be the marginal benefit of a cosponsor with prestige $\lambda$ in terms of political capital. Assuming the ``cosponsorships market``' is competitive, we can treat $K(\lambda)$ as the ``price'' of a cosponsorship from an individual with prestige $\lambda$, with $\frac{dK}{d\lambda} > 0$, $\frac{d^2K}{d\lambda^2} < 0$. That is, the marginal benefit of consponsorship with respect to prestige is decreasing. We can treat legislators as choosing an amount of cosponsorships $c$ to produce, and that they have the following utility function,
 \begin{align*}
   U(c; \lambda) = (K(\lambda)c + \lambda)^{\frac{1}{2}} - c
 \end{align*}
@@ -143,7 +143,7 @@ This is positive so long as
 \begin{align*}
   \frac{dK}{d\lambda} > \frac{K(\lambda) + 4}{3 \lambda}
 \end{align*}
-If we assume a version of the Inada conditions that $\lim_{\lambda \to 1^+} \frac{dK}{d\lambda}(\lambda) = \infty$, then we confirm hypothesis \ref{hyp:leadership_cosponsors}. However, note that because $\frac{dK}{d\lambda} < 0$, if this curvature is strong enough, then there will be some point where the prestige alone is enough and leadership will no longer cosponsor as many bills. 
+If we assume a version of the Inada conditions that $\lim_{\lambda \to 1^+} \frac{dK}{d\lambda}(\lambda) = \infty$, then we confirm hypothesis \ref{hyp:leadership_cosponsors}. However, note that because $\frac{d^2K}{d\lambda^2} < 0$, if this curvature is strong enough, then there will be some point where the prestige alone is enough and leadership will no longer cosponsor as many bills. 
 
 \section{Data and Variables}
 \subsection{Data} 
